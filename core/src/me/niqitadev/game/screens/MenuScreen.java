@@ -5,6 +5,8 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -18,7 +20,6 @@ public class MenuScreen extends ScreenAdapter {
     private final SpriteBatch spriteBatch;
     private final Texture texture;
     private final Stage stage;
-    private final Table table;
 
     @Override
     public void dispose() {
@@ -33,16 +34,27 @@ public class MenuScreen extends ScreenAdapter {
         stage = new Stage(viewport, spriteBatch);
         texture = new Texture("badlogic.jpg");
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        table = new Table(skin);
+        Table table = new Table(skin);
         table.setBounds(0, 0, 800, 600);
         stage.addActor(table);
-
-        TextButton button1 = new TextButton("Leave game", skin);
-        TextButton button2 = new TextButton("Connect", skin);
+        Gdx.input.setInputProcessor(stage);
+        TextButton exitButton = new TextButton("Exit game", skin);
+        TextButton connect = new TextButton("Connect", skin);
+        exitButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ignored) {
+                }
+                Gdx.app.exit();
+                return false;
+            }
+        });
 
         table.clear();
-        table.add(button1).height(50).width(250).row();
-        table.add(button2).padTop(50).height(50).width(250).row();
+        table.add(connect).height(35).width(210).row();
+        table.add(exitButton).padTop(20).height(35).width(210).row();
 
     }
 
@@ -61,11 +73,9 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        super.show();
     }
 
     @Override
     public void hide() {
-        super.hide();
     }
 }
