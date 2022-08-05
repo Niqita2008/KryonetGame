@@ -1,9 +1,9 @@
-package me.niqitadev.desktop;
+package me.niqitadev.core;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
-import me.niqitadev.desktop.screens.MenuScreen;
+import me.niqitadev.core.screens.MenuScreen;
 
 public class Starter extends Game {
 

@@ -48,7 +48,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        
+        implementation group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
     }
 }
 
@@ -59,7 +59,6 @@ project(":desktop") {
     dependencies {
 
         implementation project(":core")
-        implementation group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
