@@ -1,4 +1,4 @@
-package me.niqitadev.game.screens;
+package me.niqitadev.desktop.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
