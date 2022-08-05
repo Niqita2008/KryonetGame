@@ -52,7 +52,6 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        table.clear();
         table.add(connect).height(35).width(210).row();
         table.add(exitButton).padTop(20).height(35).width(210).row();
 
