@@ -4,15 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Client;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
 import me.niqitadev.core.ClientListener;
+import me.niqitadev.core.Starter;
+import me.niqitadev.core.packets.JoinError;
 import me.niqitadev.core.packets.JoinRequest;
 import me.niqitadev.core.packets.JoinResponse;
 
@@ -30,10 +31,10 @@ public class MenuScreen extends ScreenAdapter {
         stage.dispose();
     }
 
-    public MenuScreen(OrthographicCamera camera) {
-        viewport = new ScreenViewport(camera);
-        this.camera = camera;
-        stage = new Stage(viewport, new SpriteBatch());
+    public MenuScreen(Starter starter) {
+        viewport = new ScreenViewport(starter.camera);
+        this.camera = starter.camera;
+        stage = new Stage(viewport, starter.spriteBatch);
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Table table = new Table(skin);
         table.setBounds(0, 0, 800, 600);
@@ -42,7 +43,7 @@ public class MenuScreen extends ScreenAdapter {
 
         final TextField ipTextField = new TextField("localhost", skin),
                 portTextField = new TextField("7392", skin),
-                usernameTextField = new TextField("User" + (int) (Math.random() * 10000 + 1000), skin);
+                usernameTextField = new TextField("User" + (int) (Math.random() * 9000 + 999), skin);
 
         final TextButton connectButton = new TextButton("Connect", skin),
                 exitButton = new TextButton("Exit game", skin);
@@ -64,8 +65,9 @@ public class MenuScreen extends ScreenAdapter {
                 client.start();
                 Kryo kryo = client.getKryo();
                 kryo.register(JoinRequest.class);
+                kryo.register(JoinError.class);
                 kryo.register(JoinResponse.class);
-                client.addListener(new ClientListener());
+                client.addListener(new ClientListener(starter));
                 try {
                     int port = Integer.parseInt(portTextField.getText());
                     client.connect(5000, ipTextField.getText(), port, port);
