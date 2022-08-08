@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.esotericsoftware.kryonet.Client;
 import me.niqitadev.core.screens.GameScreen;
 import me.niqitadev.core.screens.MenuScreen;
 
@@ -11,11 +12,12 @@ public class Starter extends Game {
 
     public SpriteBatch spriteBatch;
     public OrthographicCamera camera;
+    public Client client = new Client();
     private MenuScreen menu;
 
     public void setToGame() {
         menu.dispose();
-        setScreen(new GameScreen(camera, spriteBatch));
+        setScreen(new GameScreen(this));
     }
 
     @Override

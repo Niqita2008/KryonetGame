@@ -9,6 +9,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jetbrains:annotations:23.0.0'
     implementation project(":core")
     implementation group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
@@ -23,8 +24,6 @@ sourceSets.main.resources.srcDirs = ["../assets"]
 
 project.ext.mainClassName = "me.niqitadev.server.Starter"
 project.ext.assetsDir = new File("../assets")
-
-import org.gradle.internal.os.OperatingSystem
 
 task run(dependsOn: classes, type: JavaExec) {
     mainClass.set(project.mainClassName)

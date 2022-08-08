@@ -1,4 +1,4 @@
-package me.niqitadev.core;
+package me.niqitadev.server;
 
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryonet.Connection;

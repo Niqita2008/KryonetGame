@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,14 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
-import me.niqitadev.core.ClientListener;
+import me.niqitadev.core.listeners.ClientListener;
 import me.niqitadev.core.Starter;
-import me.niqitadev.core.packets.JoinError;
-import me.niqitadev.core.packets.JoinRequest;
-import me.niqitadev.core.packets.JoinResponse;
+import me.niqitadev.core.packets.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class MenuScreen extends ScreenAdapter {
 
@@ -65,16 +65,19 @@ public class MenuScreen extends ScreenAdapter {
         connectButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Client client = new Client();
-                client.start();
-                Kryo kryo = client.getKryo();
+                starter.client.start();
+                Kryo kryo = starter.client.getKryo();
                 kryo.register(JoinRequest.class);
+                kryo.register(PlayersUpdatePacket.class);
+                kryo.register(MovePacket.class);
                 kryo.register(JoinError.class);
+                kryo.register(HashMap.class);
                 kryo.register(JoinResponse.class);
-                client.addListener(new ClientListener(starter));
+
+                starter.client.addListener(new ClientListener(starter));
                 try {
                     int port = Integer.parseInt(portTextField.getText());
-                    client.connect(5000, ipTextField.getText(), port, port);
+                    starter.client.connect(10000, ipTextField.getText(), port, port);
                 } catch (IOException e) {
                     errorLabel.setText(e.getLocalizedMessage());
                     return false;
@@ -82,7 +85,7 @@ public class MenuScreen extends ScreenAdapter {
 
                 JoinRequest request = new JoinRequest();
                 request.username = usernameTextField.getText();
-                client.sendTCP(request);
+                starter.client.sendTCP(request);
                 return false;
             }
         });

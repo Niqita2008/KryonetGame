@@ -2,8 +2,8 @@ package me.niqitadev.server;
 
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryonet.Connection;
-import me.niqitadev.core.OnlinePlayer;
 import me.niqitadev.core.packets.PlayersUpdatePacket;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -18,12 +18,12 @@ public class PlayerHandler implements Runnable {
 
     public final Array<OnlinePlayer> onlinePlayers = new Array<>();
 
-    public OnlinePlayer getPlayer(final String name) {
+    public OnlinePlayer getPlayer(final @NotNull String name) {
         return onlinePlayers.isEmpty() ? null : Arrays.stream(onlinePlayers.items)
                 .filter(p -> p.name.equals(name)).findFirst().orElse(null);
     }
 
-    public OnlinePlayer getPlayer(final Connection connection) {
+    public OnlinePlayer getPlayer(final @NotNull Connection connection) {
         return onlinePlayers.isEmpty() ? null : Arrays.stream(onlinePlayers.items)
                 .filter(p -> p.connection == connection).findFirst().orElse(null);
     }
@@ -34,27 +34,22 @@ public class PlayerHandler implements Runnable {
 
         onlinePlayers.forEach(p -> playersUpdatePacket.players.put(p.name, p.position));
 
-        Starter.serverLauncher.server.sendToAllUDP(playersUpdatePacket);
+        Starter.instance.server.sendToAllUDP(playersUpdatePacket);
     }
 
     @Override
     public void run() {
         long pastTime = System.nanoTime(), now;
-        double amountOfTicks = 60, ns = 1000000000 / amountOfTicks, delta = 0;
 
-        while (running) {
+        for (double delta = 0; running; pastTime = now) {
             try {
-                Thread.sleep((long) (60F / amountOfTicks));
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            delta += (now = System.nanoTime() - pastTime) / ns;
-            pastTime = now;
+            delta += (now = System.nanoTime() - pastTime) / 1.6666667E7f;
 
-            while (delta > 0) {
-                tick();
-                delta--;
-            }
+            for (; delta > 0; delta--) tick();
         }
     }
 }

@@ -1,8 +1,9 @@
-package me.niqitadev.core;
+package me.niqitadev.core.listeners;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import me.niqitadev.core.Starter;
 
 public class ClientListener extends Listener {
     private final Starter starter;
