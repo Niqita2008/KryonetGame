@@ -89,8 +89,9 @@ nb-configuration.xml
 gradle-app.setting
 /build/classes/
 /build/generated/
+/build/resorces/
 /build/tmp/
-
+/core/build/
 ## OS Specific
 .DS_Store
 Thumbs.db
