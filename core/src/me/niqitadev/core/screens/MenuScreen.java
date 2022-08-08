@@ -16,6 +16,7 @@ import me.niqitadev.core.Starter;
 import me.niqitadev.core.packets.JoinError;
 import me.niqitadev.core.packets.JoinRequest;
 import me.niqitadev.core.packets.JoinResponse;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -25,15 +26,18 @@ public class MenuScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final Stage stage;
     public final Label errorLabel;
+    private final Starter starter;
 
     @Override
     public void dispose() {
+        starter.dispose();
         stage.dispose();
     }
 
-    public MenuScreen(Starter starter) {
-        viewport = new ScreenViewport(starter.camera);
-        this.camera = starter.camera;
+    public MenuScreen(@NotNull Starter starter) {
+        this.starter = starter;
+        camera = starter.camera;
+        viewport = new ScreenViewport(camera);
         stage = new Stage(viewport, starter.spriteBatch);
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Table table = new Table(skin);
@@ -106,6 +110,7 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         camera.update();
+        stage.act(delta);
         stage.draw();
 
     }
@@ -113,7 +118,6 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-        camera.update();
     }
 
     @Override

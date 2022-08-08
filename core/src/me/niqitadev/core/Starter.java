@@ -11,8 +11,10 @@ public class Starter extends Game {
 
     public SpriteBatch spriteBatch;
     public OrthographicCamera camera;
+    private MenuScreen menu;
 
     public void setToGame() {
+        menu.dispose();
         setScreen(new GameScreen(camera, spriteBatch));
     }
 
@@ -20,7 +22,8 @@ public class Starter extends Game {
     public void create() {
         camera = new OrthographicCamera();
         spriteBatch = new SpriteBatch();
-        setScreen(new MenuScreen(this));
+        menu = new MenuScreen(this);
+        setScreen(menu);
     }
 
     public void render() {
