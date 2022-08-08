@@ -24,6 +24,7 @@ sourceSets.main.resources.srcDirs = ["../assets"]
 
 project.ext.mainClassName = "me.niqitadev.server.Starter"
 project.ext.assetsDir = new File("../assets")
+import org.apache.tools.ant.taskdefs.condition.Os
 
 task run(dependsOn: classes, type: JavaExec) {
     mainClass.set(project.mainClassName)
@@ -31,8 +32,7 @@ task run(dependsOn: classes, type: JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
-
-    if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
+    if (Os.isFamily(Os.FAMILY_MAC)) {
         // Required to run on macOS
         jvmArgs += "-XstartOnFirstThread"
     }
@@ -48,6 +48,7 @@ task debug(dependsOn: classes, type: JavaExec) {
 }
 
 task dist(type: Jar) {
+    destinationDirectory.set(file("$buildDir/"))
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
         attributes 'Main-Class': project.mainClassName

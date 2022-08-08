@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: me.niqitadev.server.ServerLauncher
+Main-Class: me.niqitadev.server.Starter
 

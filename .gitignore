@@ -94,12 +94,10 @@ nb-configuration.xml
 /local.properties
 .gradle/
 gradle-app.setting
-/build/
-/android/build/
-/core/build/
-/desktop/build/
-/html/build/
-/ios/build/
+/build/classes
+/build/generated
+/build/resources
+/build/tmp
 
 ## OS Specific
 .DS_Store
