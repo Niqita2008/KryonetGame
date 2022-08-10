@@ -48,7 +48,7 @@ task debug(dependsOn: classes, type: JavaExec) {
 }
 
 task dist(type: Jar) {
-    destinationDirectory.set(file("$buildDir/"))
+    destinationDirectory.set(file("$rootDir/"))
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
         attributes 'Main-Class': project.mainClassName
