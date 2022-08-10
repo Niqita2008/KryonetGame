@@ -1,5 +1,4 @@
 buildscript {
-    
 
     repositories {
         mavenLocal()
@@ -7,10 +6,6 @@ buildscript {
         gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
-    }
-    dependencies {
-        
-
     }
 }
 
@@ -48,7 +43,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        implementation group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
+        api group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
     }
 }
 
@@ -58,11 +53,26 @@ project(":desktop") {
 
     dependencies {
 
-        implementation project(":core")
+        api project(":core")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        
+
+    }
+}
+project(":server") {
+    apply plugin: "java-library"
+
+
+    dependencies {
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+        api project(":core")
+        api 'org.jetbrains:annotations:23.0.0'
+        api group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
+
     }
 }

@@ -1,3 +1,2 @@
-include 'core', 'desktop'
-include 'server'
+include 'core', 'desktop', 'server'
 

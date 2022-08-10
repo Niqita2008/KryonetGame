@@ -2,20 +2,6 @@ plugins {
     id 'java'
 }
 
-version '1.0'
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation 'org.jetbrains:annotations:23.0.0'
-    implementation project(":core")
-    implementation group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
-}
-
 test {
     useJUnitPlatform()
 }
@@ -59,7 +45,6 @@ task dist(type: Jar) {
     }
     with jar
 }
-
 
 dist.dependsOn classes
 
