@@ -90,9 +90,7 @@ gradle-app.setting
 /build/classes/
 /build/generated/
 /build/resorces/
-/build/tmp/compileJava/
-/build/tmp/dist/
-/build/tmp/jar/
+/build/tmp/
 /core/build/
 ## OS Specific
 .DS_Store
