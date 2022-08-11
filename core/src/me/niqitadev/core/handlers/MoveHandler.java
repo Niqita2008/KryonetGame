@@ -24,9 +24,7 @@ public class MoveHandler implements Runnable {
     @Override
     public void run() {
         long pastTime = System.nanoTime();
-        double amountOfTicks = 30;
-        double ns = 1000000000 / amountOfTicks;
-        double delta = 0;
+        double amountOfTicks = 20, ns = 1000000000 / amountOfTicks, delta = 0;
 
         while (running) {
 

@@ -4,14 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Client;
 import me.niqitadev.core.listeners.ClientListener;
 import me.niqitadev.core.Starter;
 import me.niqitadev.core.packets.*;
@@ -68,13 +66,12 @@ public class MenuScreen extends ScreenAdapter {
                 starter.client.start();
                 Kryo kryo = starter.client.getKryo();
                 kryo.register(JoinRequest.class);
-                kryo.register(PlayersUpdatePacket.class);
+                kryo.register(PlayerUpdatePacket.class);
                 kryo.register(MovePacket.class);
-                kryo.register(JoinError.class);
-                kryo.register(HashMap.class);
+                kryo.register(JoinEnum.class);
                 kryo.register(JoinResponse.class);
 
-                starter.client.addListener(new ClientListener(starter));
+                starter.client.addListener(new ClientListener(starter, errorLabel));
                 try {
                     int port = Integer.parseInt(portTextField.getText());
                     starter.client.connect(10000, ipTextField.getText(), port, port);

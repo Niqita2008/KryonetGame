@@ -1,6 +1,6 @@
 package me.niqitadev.core.listeners;
 
-public class InGameInputListener extends PressListener {
+public class InGameInputListener extends AbstractPressListener {
 
     @Override
     public void keyDown(String code) {
