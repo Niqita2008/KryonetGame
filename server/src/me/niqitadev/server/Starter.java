@@ -18,7 +18,7 @@ public class Starter {
         kryo.register(JoinRequest.class);
         kryo.register(PlayerUpdatePacket.class);
         kryo.register(MovePacket.class);
-        kryo.register(JoinEnum.class);
+        kryo.register(JoinRequestEnum.class);
         kryo.register(JoinResponse.class);
         ServerPlayerHandler handler = new ServerPlayerHandler(server);
         handler.start();

@@ -1,6 +1,14 @@
 package me.niqitadev.core.listeners;
 
+import me.niqitadev.core.Starter;
+
 public class InGameInputListener extends AbstractPressListener {
+
+    private final Starter starter;
+
+    public InGameInputListener(Starter starter) {
+        this.starter = starter;
+    }
 
     @Override
     public void keyDown(String code) {
@@ -9,6 +17,7 @@ public class InGameInputListener extends AbstractPressListener {
             case "S" -> s = true;
             case "A" -> a = true;
             case "D" -> d = true;
+            case "Escape" -> starter.stop();
         }
     }
 

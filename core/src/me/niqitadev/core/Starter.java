@@ -14,10 +14,11 @@ public class Starter extends Game {
     public OrthographicCamera camera;
     public Client client = new Client();
     private MenuScreen menu;
+    private GameScreen gameScreen;
 
     public void setToGame() {
-        menu.dispose();
-        setScreen(new GameScreen(this));
+        gameScreen = new GameScreen(this);
+        setScreen(gameScreen);
     }
 
     @Override
@@ -31,5 +32,10 @@ public class Starter extends Game {
     public void render() {
         ScreenUtils.clear(0, 0, 0.2f, 1);
         super.render(); //important!
+    }
+
+    public void stop() {
+        client.stop();
+        setScreen(menu);
     }
 }

@@ -2,17 +2,18 @@ package me.niqitadev.core.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
+import me.niqitadev.core.Starter;
 import me.niqitadev.core.listeners.InGameInputListener;
 import me.niqitadev.core.packets.MovePacket;
 
 public class MoveHandler implements Runnable {
     private final InGameInputListener listener;
-    private final Client client;
+    private final Starter starter;
     public boolean running;
 
-    public MoveHandler(Client client) {
-        this.client = client;
-        listener = new InGameInputListener();
+    public MoveHandler(Starter starter) {
+        this.starter = starter;
+        listener = new InGameInputListener(starter);
         Gdx.input.setInputProcessor(listener);
     }
 
@@ -42,7 +43,7 @@ public class MoveHandler implements Runnable {
                 MovePacket movePacket = new MovePacket();
                 movePacket.x = listener.x;
                 movePacket.y = listener.y;
-                client.sendTCP(movePacket);
+                starter.client.sendTCP(movePacket);
 
             }
         }

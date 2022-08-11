@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import me.niqitadev.core.Starter;
-import me.niqitadev.core.packets.JoinEnum;
 import me.niqitadev.core.packets.JoinResponse;
+import me.niqitadev.core.packets.PlayerUpdatePacket;
 
 public class ClientListener extends Listener {
     private final Starter starter;
@@ -22,6 +22,9 @@ public class ClientListener extends Listener {
         if (object instanceof JoinResponse response) {
             if (response.errorMessage == null) Gdx.app.postRunnable(starter::setToGame);
             else errorLabel.setText(response.errorMessage);
+            return;
+        }
+        if (object instanceof PlayerUpdatePacket playerUpdate) {
             return;
         }
     }

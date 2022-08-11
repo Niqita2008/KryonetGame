@@ -10,13 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.esotericsoftware.kryo.Kryo;
-import me.niqitadev.core.listeners.ClientListener;
 import me.niqitadev.core.Starter;
+import me.niqitadev.core.listeners.ClientListener;
 import me.niqitadev.core.packets.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class MenuScreen extends ScreenAdapter {
 
@@ -24,16 +23,13 @@ public class MenuScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final Stage stage;
     public final Label errorLabel;
-    private final Starter starter;
 
     @Override
     public void dispose() {
-        starter.dispose();
         stage.dispose();
     }
 
     public MenuScreen(@NotNull Starter starter) {
-        this.starter = starter;
         camera = starter.camera;
         viewport = new ScreenViewport(camera);
         stage = new Stage(viewport, starter.spriteBatch);
@@ -41,7 +37,6 @@ public class MenuScreen extends ScreenAdapter {
         Table table = new Table(skin);
         table.setBounds(0, 0, 800, 600);
         stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
 
         final TextField ipTextField = new TextField("localhost", skin),
                 portTextField = new TextField("7392", skin),
@@ -68,7 +63,7 @@ public class MenuScreen extends ScreenAdapter {
                 kryo.register(JoinRequest.class);
                 kryo.register(PlayerUpdatePacket.class);
                 kryo.register(MovePacket.class);
-                kryo.register(JoinEnum.class);
+                kryo.register(JoinRequestEnum.class);
                 kryo.register(JoinResponse.class);
 
                 starter.client.addListener(new ClientListener(starter, errorLabel));
@@ -122,6 +117,7 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override

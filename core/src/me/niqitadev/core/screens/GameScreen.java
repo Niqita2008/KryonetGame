@@ -34,7 +34,7 @@ public class GameScreen extends ScreenAdapter {
         batch = starter.spriteBatch;
         viewport = new ScalingViewport(Scaling.fillY, 800, 600, camera);
         stage = new Stage(viewport, starter.spriteBatch);
-        moveHandler = new MoveHandler(starter.client);
+        moveHandler = new MoveHandler(starter);
         clientPlayerHandler = new ClientPlayerHandler();
     }
 
