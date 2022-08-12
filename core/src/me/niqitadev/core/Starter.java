@@ -14,10 +14,9 @@ public class Starter extends Game {
     public OrthographicCamera camera;
     public Client client = new Client();
     private MenuScreen menu;
-    private GameScreen gameScreen;
+    public GameScreen gameScreen;
 
     public void setToGame() {
-        gameScreen = new GameScreen(this);
         setScreen(gameScreen);
     }
 
@@ -26,6 +25,7 @@ public class Starter extends Game {
         camera = new OrthographicCamera();
         spriteBatch = new SpriteBatch();
         menu = new MenuScreen(this);
+        gameScreen = new GameScreen(this);
         setScreen(menu);
     }
 
@@ -35,6 +35,7 @@ public class Starter extends Game {
     }
 
     public void stop() {
+        gameScreen.playerHandler.clear();
         client.stop();
         setScreen(menu);
     }

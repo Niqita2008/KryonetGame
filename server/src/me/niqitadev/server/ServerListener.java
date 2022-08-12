@@ -1,11 +1,9 @@
 package me.niqitadev.server;
 
 
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
-import me.niqitadev.core.handlers.CustomForEach;
-import me.niqitadev.core.packets.JoinRequestEnum;
 import me.niqitadev.core.packets.JoinRequest;
+import me.niqitadev.core.packets.JoinRequestEnum;
 import me.niqitadev.core.packets.JoinResponse;
 import me.niqitadev.core.packets.MovePacket;
 import me.niqitadev.server.handlers.ServerPlayerHandler;
@@ -15,6 +13,11 @@ public class ServerListener extends com.esotericsoftware.kryonet.Listener {
 
     public ServerListener(ServerPlayerHandler handler) {
         this.handler = handler;
+    }
+
+    @Override
+    public void disconnected(Connection connection) {
+        handler.removePlayer(connection);
     }
 
     @Override
@@ -34,8 +37,9 @@ public class ServerListener extends com.esotericsoftware.kryonet.Listener {
             return;
         }
         if (object instanceof MovePacket movePacket) {
-            handler.getPlayer(connection).pos.add(movePacket.x, movePacket.y);
-            System.out.println("moved");
+            OnlinePlayer player = handler.getPlayer(connection);
+            if (player != null) player.pos.add(movePacket.x, movePacket.y);
+            else connection.close();
         }
     }
 }

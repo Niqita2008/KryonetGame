@@ -32,11 +32,11 @@ public class InGameInputListener extends AbstractPressListener {
     }
 
     @Override
-    public boolean update(float delta, float speed) {
+    public boolean update(float speed) {
         if (!a && !w && !s && !d || a && s && w && d) return false;
-        float deltaSpeed = delta * speed;
-        y = (w ? deltaSpeed : 0) - (s ? deltaSpeed : 0);
-        x = (d ? deltaSpeed : 0) - (a ? deltaSpeed : 0);
+        if ((w || s) && (a || d)) speed /= 1.7f;
+        y = (w ? speed : 0) - (s ? speed : 0);
+        x = (d ? speed : 0) - (a ? speed : 0);
         return true;
     }
 

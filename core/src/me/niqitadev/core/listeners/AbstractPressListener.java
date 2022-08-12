@@ -23,5 +23,5 @@ public abstract class AbstractPressListener extends InputAdapter {
 
     abstract void keyUp(String code);
 
-    abstract boolean update(float delta, float speed);
+    public abstract boolean update(float speed);
 }

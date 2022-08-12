@@ -3,6 +3,7 @@ package me.niqitadev.core.handlers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ObjectSet;
 import me.niqitadev.core.tools.ClientPlayer;
+import me.niqitadev.core.tools.CustomForEach;
 
 public class ClientPlayerHandler {
 
@@ -29,8 +30,9 @@ public class ClientPlayerHandler {
         players.add(player);
     }
 
-    public void removePlayer(final ClientPlayer player) {
-        players.remove(player);
+    public void removePlayer(final String name) {
+        ClientPlayer player = getPlayer(name);
+        if (player != null) players.remove(player);
     }
 
     public void clear() {

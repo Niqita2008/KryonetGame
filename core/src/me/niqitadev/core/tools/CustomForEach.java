@@ -1,4 +1,4 @@
-package me.niqitadev.core.handlers;
+package me.niqitadev.core.tools;
 
 import com.badlogic.gdx.utils.ObjectSet;
 
@@ -25,9 +25,7 @@ public class CustomForEach {
         Breaker breaker = new Breaker();
 
         while (hadNext && !breaker.get()) {
-            hadNext = spliterator.tryAdvance(elem -> {
-                consumer.accept(elem, breaker);
-            });
+            hadNext = spliterator.tryAdvance(elem -> consumer.accept(elem, breaker));
         }
     }
 }

@@ -1,6 +1,9 @@
 package me.niqitadev.core.tools;
 
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import me.niqitadev.core.handlers.ResourceHandler;
@@ -32,11 +35,14 @@ public final class ClientPlayer {
 
     public void update(final float delta) {
         pastTime += delta;
-        pos.interpolate(this.serverPosition, .2f, Interpolation.linear);
+        pos.interpolate(this.serverPosition, .07f, Interpolation.linear);
     }
 
-    public void add(float x, float y) {
-        pos.add(x, y);
+    public void setClientPos(float x, float y) {
+        pos.set(x, y);
+    }
+    public void setServPos(float x, float y) {
+        serverPosition.set(x, y);
     }
 
 }

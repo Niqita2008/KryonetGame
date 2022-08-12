@@ -1,5 +1,6 @@
 package me.niqitadev.core.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,7 +17,7 @@ public class GameScreen extends ScreenAdapter {
     private final Viewport viewport;
     private final Stage stage;
     private final MoveHandler moveHandler;
-    private final ClientPlayerHandler clientPlayerHandler;
+    public final ClientPlayerHandler playerHandler;
     private final SpriteBatch batch;
 
     @Override
@@ -27,6 +28,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         moveHandler.start();
+        Gdx.input.setInputProcessor(moveHandler.listener);
     }
 
     public GameScreen(Starter starter) {
@@ -35,7 +37,7 @@ public class GameScreen extends ScreenAdapter {
         viewport = new ScalingViewport(Scaling.fillY, 800, 600, camera);
         stage = new Stage(viewport, starter.spriteBatch);
         moveHandler = new MoveHandler(starter);
-        clientPlayerHandler = new ClientPlayerHandler();
+        playerHandler = new ClientPlayerHandler();
     }
 
 
@@ -44,7 +46,9 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
         stage.act(delta);
         stage.draw();
-        clientPlayerHandler.updateAndRender(delta, batch);
+        batch.begin();
+        playerHandler.updateAndRender(delta, batch);
+        batch.end();
     }
 
     @Override

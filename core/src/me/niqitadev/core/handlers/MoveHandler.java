@@ -1,20 +1,17 @@
 package me.niqitadev.core.handlers;
 
-import com.badlogic.gdx.Gdx;
-import com.esotericsoftware.kryonet.Client;
 import me.niqitadev.core.Starter;
 import me.niqitadev.core.listeners.InGameInputListener;
 import me.niqitadev.core.packets.MovePacket;
 
 public class MoveHandler implements Runnable {
-    private final InGameInputListener listener;
+    public final InGameInputListener listener;
     private final Starter starter;
     public boolean running;
 
     public MoveHandler(Starter starter) {
         this.starter = starter;
         listener = new InGameInputListener(starter);
-        Gdx.input.setInputProcessor(listener);
     }
 
     public synchronized void start() {
@@ -23,28 +20,30 @@ public class MoveHandler implements Runnable {
     }
 
     @Override
-    public void run() {
-        long pastTime = System.nanoTime();
-        double amountOfTicks = 20, ns = 1000000000 / amountOfTicks, delta = 0;
+    public synchronized void run() {
+
+        long now, updateTime, wait;
+
+        final long optimalTime = 55000000; // ms / amount of ticks
 
         while (running) {
+            now = System.nanoTime();
 
-            try {
-                Thread.sleep((long) (60 / amountOfTicks));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            long now = System.nanoTime();
-            delta += (now - pastTime) / ns;
-            pastTime = now;
-
-            for (; delta > 0; delta--) if (listener.update((float) delta, 3f)) {
+            if (listener.update(30)) {
                 MovePacket movePacket = new MovePacket();
                 movePacket.x = listener.x;
                 movePacket.y = listener.y;
                 starter.client.sendTCP(movePacket);
 
+            }
+
+            updateTime = System.nanoTime() - now;
+            wait = (optimalTime - updateTime) / 1000000;
+
+            try {
+                Thread.sleep(wait);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

@@ -39,6 +39,8 @@ project(":core") {
 
 
     dependencies {
+        api 'org.jetbrains:annotations:23.0.0'
+        api "come.badlogic.gdx-tools:$gdxVersion"
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
@@ -52,8 +54,8 @@ project(":desktop") {
 
 
     dependencies {
-
         api project(":core")
+        api 'org.jetbrains:annotations:23.0.0'
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
@@ -66,12 +68,11 @@ project(":server") {
 
 
     dependencies {
-        api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         api project(":core")
-        api 'org.jetbrains:annotations:23.0.0'
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
 
     }

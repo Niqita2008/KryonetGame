@@ -1,20 +1,18 @@
 package me.niqitadev.server.handlers;
 
-import com.badlogic.gdx.utils.ObjectSet;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
-import me.niqitadev.core.handlers.CustomForEach;
-import me.niqitadev.core.packets.MovePacket;
+import me.niqitadev.core.packets.OtherPlayerDisconnected;
 import me.niqitadev.core.packets.PlayerUpdatePacket;
 import me.niqitadev.server.OnlinePlayer;
 
-import java.util.function.Consumer;
+import java.util.HashSet;
 
 public class ServerPlayerHandler implements Runnable {
 
     private boolean running;
     private final Server server;
-    public final ObjectSet<OnlinePlayer> onlinePlayers = new ObjectSet<>();
+    public final HashSet<OnlinePlayer> onlinePlayers = new HashSet<>();
 
     public ServerPlayerHandler(Server server) {
         this.server = server;
@@ -26,30 +24,17 @@ public class ServerPlayerHandler implements Runnable {
     }
 
     public OnlinePlayer getPlayer(final String name) {
-        OnlinePlayer[] value = {null};
-        CustomForEach.forEach(onlinePlayers, (e, breaker) -> {
-            if (!e.name.equals(name)) return;
-            value[0] = e;
-            breaker.stop();
-        });
-        return value[0];
+        return onlinePlayers.stream().filter(p -> p.name.equals(name)).findFirst().orElse(null);
     }
 
     public OnlinePlayer getPlayer(final Connection connection) {
-        OnlinePlayer[] value = {null};
-        CustomForEach.forEach(onlinePlayers, (e, breaker) -> {
-            if (e.connection != connection) return;
-            value[0] = e;
-            breaker.stop();
-        });
-        return value[0];
+        return onlinePlayers.stream().filter(p -> p.connection == connection).findFirst().orElse(null);
     }
 
-    public void tick() {
-        onlinePlayers.forEach(OnlinePlayer::update);
+    public synchronized void tick() {
         final PlayerUpdatePacket playerUpdatePacket = new PlayerUpdatePacket();
-
         onlinePlayers.forEach(p -> {
+            p.update();
             playerUpdatePacket.name = p.name;
             playerUpdatePacket.x = p.pos.x;
             playerUpdatePacket.y = p.pos.y;
@@ -58,24 +43,35 @@ public class ServerPlayerHandler implements Runnable {
 
     }
 
+    public void removePlayer(Connection connection) {
+        OnlinePlayer player = getPlayer(connection);
+        if (player == null) return;
+        OtherPlayerDisconnected disconnected = new OtherPlayerDisconnected();
+        disconnected.name = player.name;
+        server.sendToAllExceptUDP(connection.getID(), disconnected);
+        onlinePlayers.remove(player);
+    }
+
     @Override
-    public void run() {
-        long pastTime = System.nanoTime();
-        double amountOfTicks = 20, ns = 1000000000 / amountOfTicks, delta = 0;
+    public synchronized void run() {
+
+        long now, updateTime, wait;
+
+        final long optimalTime = 100000000; // ms / amount of ticks
 
         while (running) {
+            now = System.nanoTime();
+
+            tick();
+
+            updateTime = System.nanoTime() - now;
+            wait = (optimalTime - updateTime) / 1000000;
 
             try {
-                Thread.sleep((long) (60 / amountOfTicks));
-            } catch (InterruptedException e) {
+                Thread.sleep(wait);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            long now = System.nanoTime();
-            delta += (now - pastTime) / ns;
-            pastTime = now;
-
-            for (; delta > 0; delta--) tick();
         }
     }
 }

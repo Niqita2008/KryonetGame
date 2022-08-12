@@ -23,6 +23,7 @@ public class MenuScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final Stage stage;
     public final Label errorLabel;
+    public final TextButton connectButton;
 
     @Override
     public void dispose() {
@@ -42,19 +43,15 @@ public class MenuScreen extends ScreenAdapter {
                 portTextField = new TextField("7392", skin),
                 usernameTextField = new TextField("User" + (int) (Math.random() * 9000 + 999), skin);
 
-        final TextButton connectButton = new TextButton("Connect", skin),
-                exitButton = new TextButton("Exit game", skin);
+        final TextButton exitButton = new TextButton("Exit game", skin);
 
         final Label[] labels = {new Label("Server IP", skin), new Label("Port", skin), new Label("Username", skin)};
 
-        for (Label label : labels) {
-            label.setColor(Color.LIGHT_GRAY);
-            label.setFontScale(.9f);
-        }
+        for (Label label : labels) label.setColor(Color.LIGHT_GRAY);
 
         errorLabel = new Label(null, skin);
         errorLabel.setColor(Color.RED);
-        errorLabel.setFontScale(.9f);
+        connectButton = new TextButton("Connect", skin);
         connectButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -64,6 +61,7 @@ public class MenuScreen extends ScreenAdapter {
                 kryo.register(PlayerUpdatePacket.class);
                 kryo.register(MovePacket.class);
                 kryo.register(JoinRequestEnum.class);
+                kryo.register(OtherPlayerDisconnected.class);
                 kryo.register(JoinResponse.class);
 
                 starter.client.addListener(new ClientListener(starter, errorLabel));
