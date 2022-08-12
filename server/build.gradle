@@ -36,9 +36,9 @@ task debug(dependsOn: classes, type: JavaExec) {
 task dist(type: Jar) {
     destinationDirectory.set(file("$rootDir/builds"))
 
-    for (final file in destinationDir.listFiles()) if (file.getName().contains("server")) file.delete()
+    for (final file in destinationDir.listFiles()) if (file.getName().contains("-server")) file.delete()
+    duplicatesStrategy(DuplicatesStrategy.INCLUDE)
 
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
         attributes 'Main-Class': project.mainClassName
     }

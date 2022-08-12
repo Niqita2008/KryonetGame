@@ -31,9 +31,9 @@ task debug(dependsOn: classes, type: JavaExec) {
 task dist(type: Jar) {
     destinationDirectory.set(file("$rootDir/builds/"))
 
-    for (final file in destinationDir.listFiles()) if (file.getName().contains("desktop")) file.delete()
+    for (final file in destinationDir.listFiles()) if (file.getName().contains("-desktop")) file.delete()
 
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    duplicatesStrategy(DuplicatesStrategy.INCLUDE)
     manifest {
         attributes 'Main-Class': project.mainClassName
     }

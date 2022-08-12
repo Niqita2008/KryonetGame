@@ -8,7 +8,7 @@ import me.niqitadev.core.Starter;
 public class Launcher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration conf = new Lwjgl3ApplicationConfiguration();
-		conf.setForegroundFPS(60);
+		conf.useVsync(true);
 		conf.setWindowedMode(800, 600);
 		conf.setTitle("KryonetGame");
 		new Lwjgl3Application(new Starter(), conf);
