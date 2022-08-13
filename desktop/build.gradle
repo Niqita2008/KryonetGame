@@ -25,7 +25,6 @@ task debug(dependsOn: classes, type: JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
-    debug = true
 }
 
 task dist(type: Jar) {
