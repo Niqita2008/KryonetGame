@@ -5,16 +5,14 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import me.niqitadev.core.Starter;
 import me.niqitadev.core.handlers.ClientPlayerHandler;
 import me.niqitadev.core.handlers.MoveHandler;
 
 public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
-    private final Viewport viewport;
+    private final ExtendViewport viewport;
     private final Stage stage;
     private final MoveHandler moveHandler;
     public final ClientPlayerHandler playerHandler;
@@ -34,7 +32,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(Starter starter) {
         camera = starter.camera;
         batch = starter.spriteBatch;
-        viewport = new ScalingViewport(Scaling.fillY, 800, 600, camera);
+        viewport = starter.viewport;
         stage = new Stage(viewport, starter.spriteBatch);
         moveHandler = new MoveHandler(starter);
         playerHandler = new ClientPlayerHandler();
@@ -53,7 +51,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        viewport.update(width, height, true);
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.esotericsoftware.kryo.Kryo;
 import me.niqitadev.core.Starter;
 import me.niqitadev.core.listeners.ClientListener;
@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class MenuScreen extends ScreenAdapter {
 
-    private final ScreenViewport viewport;
+    private final ExtendViewport viewport;
     private final OrthographicCamera camera;
     private final Stage stage;
     public final Label errorLabel;
@@ -32,7 +32,7 @@ public class MenuScreen extends ScreenAdapter {
 
     public MenuScreen(@NotNull Starter starter) {
         camera = starter.camera;
-        viewport = new ScreenViewport(camera);
+        viewport = starter.viewport;
         stage = new Stage(viewport, starter.spriteBatch);
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Table table = new Table(skin);
@@ -110,7 +110,7 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        viewport.update(width, height, true);
     }
 
     @Override
