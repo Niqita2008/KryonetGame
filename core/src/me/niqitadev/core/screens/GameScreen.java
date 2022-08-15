@@ -15,6 +15,7 @@ public class GameScreen extends ScreenAdapter {
     private final ExtendViewport viewport;
     private final Stage stage;
     private final MoveHandler moveHandler;
+    private final Starter starter;
     public final ClientPlayerHandler playerHandler;
     private final SpriteBatch batch;
 
@@ -25,6 +26,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        playerHandler.addMe(starter.name);
         moveHandler.start();
         Gdx.input.setInputProcessor(moveHandler.listener);
     }
@@ -34,8 +36,9 @@ public class GameScreen extends ScreenAdapter {
         batch = starter.spriteBatch;
         viewport = starter.viewport;
         stage = new Stage(viewport, starter.spriteBatch);
+        this.starter = starter;
+        playerHandler = new ClientPlayerHandler(stage);
         moveHandler = new MoveHandler(starter);
-        playerHandler = new ClientPlayerHandler();
     }
 
 
@@ -44,9 +47,6 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
         stage.act(delta);
         stage.draw();
-        batch.begin();
-        playerHandler.updateAndRender(delta, batch);
-        batch.end();
     }
 
     @Override

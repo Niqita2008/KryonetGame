@@ -31,18 +31,6 @@ public class ServerPlayerHandler implements Runnable {
         return onlinePlayers.stream().filter(p -> p.connection == connection).findFirst().orElse(null);
     }
 
-    public synchronized void tick() {
-        final PlayerUpdatePacket playerUpdatePacket = new PlayerUpdatePacket();
-        onlinePlayers.forEach(p -> {
-            p.update();
-            playerUpdatePacket.name = p.name;
-            playerUpdatePacket.x = p.pos.x;
-            playerUpdatePacket.y = p.pos.y;
-            server.sendToAllUDP(playerUpdatePacket);
-        });
-
-    }
-
     public void removePlayer(Connection connection) {
         OnlinePlayer player = getPlayer(connection);
         if (player == null) return;
@@ -55,17 +43,23 @@ public class ServerPlayerHandler implements Runnable {
     @Override
     public synchronized void run() {
 
-        long now, updateTime, wait;
+        final long optimalTime = 50000000; // ms / amount of ticks
 
-        final long optimalTime = 100000000; // ms / amount of ticks
-
-        while (running) {
+        for (long now, updateTime, wait; running; ) {
             now = System.nanoTime();
 
-            tick();
+            final PlayerUpdatePacket playerUpdatePacket = new PlayerUpdatePacket();
+            onlinePlayers.forEach(p -> {
+                playerUpdatePacket.name = p.name;
+                playerUpdatePacket.x = p.x;
+                playerUpdatePacket.y = p.y;
+                server.sendToAllUDP(playerUpdatePacket);
+                System.out.println(playerUpdatePacket);
+            });
 
             updateTime = System.nanoTime() - now;
             wait = (optimalTime - updateTime) / 1000000;
+            if (wait < 1) continue;
 
             try {
                 Thread.sleep(wait);

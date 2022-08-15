@@ -7,5 +7,5 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 public class ResourceHandler {
 
     public static final Animation<TextureAtlas.AtlasRegion> playerIdle =
-            new Animation<>(.016666668f /* 1 / 60f */, new TextureAtlas(Gdx.files.internal("player_idle.atlas")).getRegions());
+            new Animation<>(1 / 60f, new TextureAtlas(Gdx.files.internal("player_idle.atlas")).getRegions());
 }

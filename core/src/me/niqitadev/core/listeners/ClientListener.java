@@ -9,7 +9,7 @@ import me.niqitadev.core.packets.JoinResponse;
 import me.niqitadev.core.packets.OtherPlayerDisconnected;
 import me.niqitadev.core.packets.PlayerUpdatePacket;
 import me.niqitadev.core.screens.GameScreen;
-import me.niqitadev.core.tools.ClientPlayer;
+import me.niqitadev.core.tools.OtherClientPlayer;
 
 public class ClientListener extends Listener {
     private final Starter starter;
@@ -36,12 +36,17 @@ public class ClientListener extends Listener {
         }
         if (object instanceof PlayerUpdatePacket playerUpdate) {
             Gdx.app.postRunnable(() -> {
-                ClientPlayer player = gameScreen.playerHandler.getPlayer(playerUpdate.name);
-                if (player == null) {
-                    player = new ClientPlayer(playerUpdate.name);
-                    player.setClientPos(playerUpdate.x, playerUpdate.y);
-                    gameScreen.playerHandler.addPlayer(player);
+                OtherClientPlayer player = gameScreen.playerHandler.getPlayer(playerUpdate.name);
+                if (player != null) {
+                    player.setServPos(playerUpdate.x, playerUpdate.y);
+                    return;
                 }
+                if (starter.name.equals(playerUpdate.name)) {
+                    gameScreen.playerHandler.me.setServPos(playerUpdate.x, playerUpdate.y);
+                    return;
+                }
+                player = new OtherClientPlayer(playerUpdate.name);
+                gameScreen.playerHandler.addPlayer(player);
                 player.setServPos(playerUpdate.x, playerUpdate.y);
             });
             return;

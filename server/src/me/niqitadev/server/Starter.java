@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Starter {
     public final Server server;
 
-    public Starter() throws IOException {
+    private Starter() throws IOException {
         server = new Server();
         server.start();
         server.bind(7392, 7392);

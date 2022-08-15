@@ -22,23 +22,19 @@ public class MoveHandler implements Runnable {
     @Override
     public synchronized void run() {
 
-        long now, updateTime, wait;
-
         final long optimalTime = 55000000; // ms / amount of ticks
 
-        while (running) {
+        for (long now, updateTime, wait; running; ) {
             now = System.nanoTime();
 
-            if (listener.update(30)) {
-                MovePacket movePacket = new MovePacket();
-                movePacket.x = listener.x;
-                movePacket.y = listener.y;
-                starter.client.sendTCP(movePacket);
-
-            }
+           /* if (listener.update(30)) {
+                starter.client.sendTCP(new MovePacket(listener.x, listener.y));
+            }*/
 
             updateTime = System.nanoTime() - now;
             wait = (optimalTime - updateTime) / 1000000;
+
+            if (wait < 1) continue;
 
             try {
                 Thread.sleep(wait);

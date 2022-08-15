@@ -38,8 +38,10 @@ public class ServerListener extends com.esotericsoftware.kryonet.Listener {
         }
         if (object instanceof MovePacket movePacket) {
             OnlinePlayer player = handler.getPlayer(connection);
-            if (player != null) player.pos.add(movePacket.x, movePacket.y);
-            else connection.close();
+            if (player != null) {
+                player.x += movePacket.x;
+                player.y += movePacket.y;
+            } else connection.close();
         }
     }
 }

@@ -75,6 +75,7 @@ public class MenuScreen extends ScreenAdapter {
 
                 JoinRequest request = new JoinRequest();
                 request.username = usernameTextField.getText();
+                starter.name = request.username;
                 starter.client.sendTCP(request);
                 return false;
             }
@@ -105,7 +106,6 @@ public class MenuScreen extends ScreenAdapter {
         camera.update();
         stage.act(delta);
         stage.draw();
-
     }
 
     @Override

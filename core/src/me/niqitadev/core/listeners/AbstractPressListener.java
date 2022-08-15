@@ -4,11 +4,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
 public abstract class AbstractPressListener extends InputAdapter {
-    public float x, y;
-    boolean a, w, s, d;
+    public boolean a, w, s, d;
 
     @Override
-    public boolean keyDown(int keycode) {
+    public final boolean keyDown(int keycode) {
         keyDown(Input.Keys.toString(keycode));
         return false;
     }
@@ -16,12 +15,11 @@ public abstract class AbstractPressListener extends InputAdapter {
     abstract void keyDown(String code);
 
     @Override
-    public boolean keyUp(int keycode) {
+    public final boolean keyUp(int keycode) {
         keyUp(Input.Keys.toString(keycode));
         return false;
     }
 
     abstract void keyUp(String code);
 
-    public abstract boolean update(float speed);
 }

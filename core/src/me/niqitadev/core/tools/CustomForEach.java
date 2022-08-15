@@ -19,7 +19,7 @@ public class CustomForEach {
         }
     }
 
-    public static <T> void forEach(ObjectSet<T> stream, BiConsumer<T, Breaker> consumer) {
+    public static <T> void forEach(Iterable<T> stream, BiConsumer<T, Breaker> consumer) {
         Spliterator<T> spliterator = stream.spliterator();
         boolean hadNext = true;
         Breaker breaker = new Breaker();

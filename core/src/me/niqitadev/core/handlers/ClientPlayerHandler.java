@@ -1,41 +1,50 @@
 package me.niqitadev.core.handlers;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ObjectSet;
-import me.niqitadev.core.tools.ClientPlayer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
+import me.niqitadev.core.Starter;
+import me.niqitadev.core.tools.Me;
+import me.niqitadev.core.tools.OtherClientPlayer;
 import me.niqitadev.core.tools.CustomForEach;
 
 public class ClientPlayerHandler {
+    private final Stage stage;
+    private final Array<Actor> players;
+    public Me me;
 
-    private final ObjectSet<ClientPlayer> players = new ObjectSet<>();
+    public ClientPlayerHandler(Stage stage) {
+        this.stage = stage;
+        players = stage.getActors();
+    }
 
-    public ClientPlayer getPlayer(final String name) {
-        final ClientPlayer[] value = {null};
+    public OtherClientPlayer getPlayer(final String name) {
+        final OtherClientPlayer[] value = {null};
         CustomForEach.forEach(players, (e, breaker) -> {
-            if (!e.name.equals(name)) return;
-            value[0] = e;
+            if (!(e instanceof OtherClientPlayer c) || !c.name.equals(name)) return;
+            value[0] = c;
             breaker.stop();
+
         });
         return value[0];
     }
 
-    public void updateAndRender(final float delta, SpriteBatch batch) {
-        players.forEach(f -> {
-            f.update(delta);
-            f.render(batch);
-        });
+    public void addMe(String name) {
+        me = new Me(name, stage.getCamera());
+        stage.addActor(me);
     }
 
-    public void addPlayer(final ClientPlayer player) {
-        players.add(player);
+    public void addPlayer(final OtherClientPlayer player) {
+        stage.addActor(player);
     }
 
     public void removePlayer(final String name) {
-        ClientPlayer player = getPlayer(name);
-        if (player != null) players.remove(player);
+        Actor player = getPlayer(name);
+        if (player == null) return;
+        players.removeValue(player, true);
     }
 
     public void clear() {
-        players.clear();
+        stage.clear();
     }
 }

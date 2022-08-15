@@ -18,6 +18,7 @@ public class Starter extends Game {
     private MenuScreen menu;
     public GameScreen gameScreen;
     public ExtendViewport viewport;
+    public String name;
 
     public void setToGame() {
         setScreen(gameScreen);
@@ -35,7 +36,7 @@ public class Starter extends Game {
     }
 
     public void render() {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        ScreenUtils.clear(0, 0, .11f, 1);
         super.render(); //important!
     }
 

@@ -1,13 +1,10 @@
 package me.niqitadev.server;
 
-import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryonet.Connection;
 
 public class OnlinePlayer {
     public final String name;
-    public float speed = 30;
-    public boolean w, s, a, d;
-    public final Vector2 pos = new Vector2();
+    public float x, y, speed = 30;
     public final Connection connection;
 
     public OnlinePlayer(String name, Connection connection) {
@@ -15,7 +12,9 @@ public class OnlinePlayer {
         this.connection = connection;
     }
 
-    public void update() {
-        pos.add((d ? speed : 0) - (a ? speed : 0), (w ? speed : 0) - (s ? speed : 0));
+    public void update(boolean d, boolean a, boolean w, boolean s) {
+        if ((a || d) && (w || s))
+        x += (d ? speed : 0) - (a ? speed : 0);
+        y += (w ? speed : 0) - (s ? speed : 0);
     }
 }
