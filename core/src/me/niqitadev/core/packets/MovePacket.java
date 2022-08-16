@@ -4,10 +4,12 @@ public class MovePacket {
     public MovePacket() {
     }
 
-    public MovePacket(float x, float y) {
-        this.x = x;
-        this.y = y;
+    public MovePacket(boolean a, boolean w, boolean s, boolean d) {
+        this.a = a;
+        this.w = w;
+        this.s = s;
+        this.d = d;
     }
 
-    public float x, y; // add
+    public boolean a, w, s, d;
 }

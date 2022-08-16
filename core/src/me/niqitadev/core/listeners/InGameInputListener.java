@@ -3,7 +3,7 @@ package me.niqitadev.core.listeners;
 import me.niqitadev.core.Starter;
 
 public class InGameInputListener extends AbstractPressListener {
-
+    public boolean a, w, s, d;
     private final Starter starter;
 
     public InGameInputListener(Starter starter) {
@@ -29,6 +29,13 @@ public class InGameInputListener extends AbstractPressListener {
             case "A" -> a = false;
             case "D" -> d = false;
         }
+    }
+
+    public void reset() {
+        a = false;
+        w = false;
+        s = false;
+        d = false;
     }
 
 }

@@ -1,50 +1,48 @@
 package me.niqitadev.core.handlers;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
-import me.niqitadev.core.Starter;
-import me.niqitadev.core.tools.Me;
-import me.niqitadev.core.tools.OtherClientPlayer;
-import me.niqitadev.core.tools.CustomForEach;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import me.niqitadev.core.client_players.Me;
+import me.niqitadev.core.client_players.OtherClientPlayer;
+
+import java.util.HashSet;
 
 public class ClientPlayerHandler {
-    private final Stage stage;
-    private final Array<Actor> players;
+    private final HashSet<OtherClientPlayer> players = new HashSet<>();
     public Me me;
+    private final Camera camera;
+    private final Batch batch;
 
-    public ClientPlayerHandler(Stage stage) {
-        this.stage = stage;
-        players = stage.getActors();
+    public ClientPlayerHandler(Camera camera, Batch batch) {
+        this.camera = camera;
+        this.batch = batch;
     }
 
     public OtherClientPlayer getPlayer(final String name) {
-        final OtherClientPlayer[] value = {null};
-        CustomForEach.forEach(players, (e, breaker) -> {
-            if (!(e instanceof OtherClientPlayer c) || !c.name.equals(name)) return;
-            value[0] = c;
-            breaker.stop();
-
-        });
-        return value[0];
+        return players.stream().filter(k -> k.name.equals(name)).findFirst().orElse(null);
     }
 
     public void addMe(String name) {
-        me = new Me(name, stage.getCamera());
-        stage.addActor(me);
+        me = new Me(name, camera);
+    }
+
+    public void update(final float delta) {
+        batch.begin();
+        if (me != null) me.draw(batch, delta);
+        players.forEach(h -> h.draw(batch, delta));
+        batch.end();
     }
 
     public void addPlayer(final OtherClientPlayer player) {
-        stage.addActor(player);
+        players.add(player);
     }
 
     public void removePlayer(final String name) {
-        Actor player = getPlayer(name);
-        if (player == null) return;
-        players.removeValue(player, true);
+        final OtherClientPlayer player = getPlayer(name);
+        if (player != null) players.remove(player);
     }
 
     public void clear() {
-        stage.clear();
+        players.clear();
     }
 }

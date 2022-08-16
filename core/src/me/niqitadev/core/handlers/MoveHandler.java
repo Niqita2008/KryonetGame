@@ -7,7 +7,13 @@ import me.niqitadev.core.packets.MovePacket;
 public class MoveHandler implements Runnable {
     public final InGameInputListener listener;
     private final Starter starter;
-    public boolean running;
+    private boolean running;
+
+    public void stop() {
+        running = false;
+        listener.reset();
+
+    }
 
     public MoveHandler(Starter starter) {
         this.starter = starter;
@@ -22,14 +28,12 @@ public class MoveHandler implements Runnable {
     @Override
     public synchronized void run() {
 
-        final long optimalTime = 55000000; // ms / amount of ticks
+        final long optimalTime = 70000000; // ms / amount of ticks
 
         for (long now, updateTime, wait; running; ) {
             now = System.nanoTime();
 
-           /* if (listener.update(30)) {
-                starter.client.sendTCP(new MovePacket(listener.x, listener.y));
-            }*/
+            starter.client.sendTCP(new MovePacket(listener.a, listener.w, listener.s, listener.d));
 
             updateTime = System.nanoTime() - now;
             wait = (optimalTime - updateTime) / 1000000;

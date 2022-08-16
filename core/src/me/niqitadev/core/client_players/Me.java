@@ -1,6 +1,5 @@
-package me.niqitadev.core.tools;
+package me.niqitadev.core.client_players;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -8,16 +7,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import me.niqitadev.core.handlers.ResourceHandler;
 
-public final class Me extends Actor {
-    public final String name;
+public final class Me {
+    public final String name, you = "You";
     private final Camera camera;
     private final float regionWidth, regionHeight;
-    private final GlyphLayout glyphLayout;
+    private final GlyphLayout nameLayout, youLayout;
     private float pastTime;
     private final BitmapFont font;
     private final Vector3 servPos = new Vector3();
@@ -29,24 +26,24 @@ public final class Me extends Actor {
         TextureRegion frame = ResourceHandler.playerIdle.getKeyFrame(0);
         regionHeight = frame.getRegionHeight() / 2f;
         regionWidth = frame.getRegionWidth() / 2f;
-        glyphLayout = new GlyphLayout(font, name);
+        youLayout = new GlyphLayout(font, you);
+        nameLayout = new GlyphLayout(font, name);
     }
 
-    @Override
-    public void draw(final Batch batch, final float parentAlpha) {
-        pastTime += Gdx.graphics.getDeltaTime();
+    public void draw(final Batch batch, final float delta) {
+        pastTime += delta;
+        camera.position.interpolate(servPos, .2f, Interpolation.circle);
         TextureRegion frame = ResourceHandler.playerIdle.getKeyFrame(pastTime, true);
         batch.draw(frame, camera.position.x - regionWidth, camera.position.y - regionHeight);
-        font.draw(batch, name, camera.position.x - glyphLayout.width / 2f, camera.position.y + glyphLayout.height + regionHeight);
-    }
-
-    @Override
-    public void act(float delta) {
-        camera.position.interpolate(servPos, .08f, Interpolation.linear);
-        super.act(delta);
+        font.draw(batch, you, camera.position.x - youLayout.width / 2f, camera.position.y + youLayout.height + regionHeight + nameLayout.height);
+        font.draw(batch, name, camera.position.x - nameLayout.width / 2f, camera.position.y + nameLayout.height + regionHeight);
     }
 
     public void setServPos(final float x, final float y) {
         servPos.set(x, y, 0);
+    }
+
+    public void dispose() {
+        font.dispose();
     }
 }

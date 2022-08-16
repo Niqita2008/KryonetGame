@@ -43,7 +43,7 @@ public class ServerPlayerHandler implements Runnable {
     @Override
     public synchronized void run() {
 
-        final long optimalTime = 50000000; // ms / amount of ticks
+        final long optimalTime = 70000000; // ms / amount of ticks
 
         for (long now, updateTime, wait; running; ) {
             now = System.nanoTime();
@@ -54,7 +54,6 @@ public class ServerPlayerHandler implements Runnable {
                 playerUpdatePacket.x = p.x;
                 playerUpdatePacket.y = p.y;
                 server.sendToAllUDP(playerUpdatePacket);
-                System.out.println(playerUpdatePacket);
             });
 
             updateTime = System.nanoTime() - now;

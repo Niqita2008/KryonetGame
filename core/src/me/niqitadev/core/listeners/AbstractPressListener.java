@@ -4,7 +4,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
 public abstract class AbstractPressListener extends InputAdapter {
-    public boolean a, w, s, d;
 
     @Override
     public final boolean keyDown(int keycode) {

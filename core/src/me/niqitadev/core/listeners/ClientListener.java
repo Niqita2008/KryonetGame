@@ -9,7 +9,7 @@ import me.niqitadev.core.packets.JoinResponse;
 import me.niqitadev.core.packets.OtherPlayerDisconnected;
 import me.niqitadev.core.packets.PlayerUpdatePacket;
 import me.niqitadev.core.screens.GameScreen;
-import me.niqitadev.core.tools.OtherClientPlayer;
+import me.niqitadev.core.client_players.OtherClientPlayer;
 
 public class ClientListener extends Listener {
     private final Starter starter;
@@ -24,7 +24,7 @@ public class ClientListener extends Listener {
 
     @Override
     public void disconnected(Connection connection) {
-        Gdx.app.postRunnable(starter::stop);
+        starter.stop();
     }
 
     @Override
@@ -51,8 +51,7 @@ public class ClientListener extends Listener {
             });
             return;
         }
-        if (object instanceof OtherPlayerDisconnected disconnected) {
+        if (object instanceof OtherPlayerDisconnected disconnected)
             gameScreen.playerHandler.removePlayer(disconnected.name);
-        }
     }
 }
