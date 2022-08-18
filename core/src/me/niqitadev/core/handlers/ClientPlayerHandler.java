@@ -27,10 +27,8 @@ public class ClientPlayerHandler {
     }
 
     public void update(final float delta) {
-        batch.begin();
         if (me != null) me.draw(batch, delta);
         players.forEach(h -> h.draw(batch, delta));
-        batch.end();
     }
 
     public void addPlayer(final OtherClientPlayer player) {

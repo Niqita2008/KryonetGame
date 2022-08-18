@@ -3,8 +3,10 @@ package me.niqitadev.core.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import me.niqitadev.core.Starter;
 import me.niqitadev.core.handlers.ClientPlayerHandler;
@@ -17,6 +19,7 @@ public class GameScreen extends ScreenAdapter {
     private final Starter starter;
     public final ClientPlayerHandler playerHandler;
     private final SpriteBatch batch;
+    private final Texture grass;
 
     @Override
     public void hide() {
@@ -31,6 +34,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public GameScreen(final Starter starter) {
+        grass = new Texture("grass.png");
         camera = starter.camera;
         batch = starter.spriteBatch;
         viewport = new ExtendViewport(800, 600, camera);
@@ -43,9 +47,17 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(final float delta) {
+        ScreenUtils.clear(0.35f, 0, 0, 1);
         camera.update();
+        batch.begin();
+        int height = grass.getHeight(), width = grass.getWidth();
+        for (int x = -1000; x < 1000; x += width)
+            for (int y = -1000; y < 1000; y += height) {
+                batch.draw(grass, x, y);
+            }
         playerHandler.update(delta);
         batch.setProjectionMatrix(camera.combined);
+        batch.end();
     }
 
     @Override

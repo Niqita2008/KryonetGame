@@ -1,10 +1,3 @@
-plugins {
-    id 'java'
-}
-
-test {
-    useJUnitPlatform()
-}
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 project.ext.mainClassName = "me.niqitadev.server.Starter"
@@ -15,10 +8,7 @@ task run(dependsOn: classes, type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
     ignoreExitValue = true
-    if (Os.isFamily(Os.FAMILY_MAC)) {
-        // Required to run on macOS
-        jvmArgs += "-XstartOnFirstThread"
-    }
+    if (Os.isFamily(Os.FAMILY_MAC)) jvmArgs += "-XstartOnFirstThread" // Required to run on macOS
 }
 
 task debug(dependsOn: classes, type: JavaExec) {
@@ -32,7 +22,7 @@ task debug(dependsOn: classes, type: JavaExec) {
 task dist(type: Jar) {
     destinationDirectory.set(file("$rootDir/builds"))
 
-    for (final file in destinationDir.listFiles()) if (file.getName().contains("-server")) file.delete()
+    destinationDir.listFiles().each { final file -> if (file.getName().contains("-server")) file.delete() }
     duplicatesStrategy(DuplicatesStrategy.INCLUDE)
 
     manifest {

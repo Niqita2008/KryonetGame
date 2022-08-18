@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.esotericsoftware.kryonet.Client;
 import me.niqitadev.core.screens.GameScreen;
 import me.niqitadev.core.screens.MenuScreen;
@@ -32,12 +31,10 @@ public class Starter extends Game {
     }
 
     public void render() {
-        ScreenUtils.clear(0, 0, .17f, 1);
         super.render(); //important!
     }
 
     public void stop() {
-        gameScreen.playerHandler.me.dispose();
         gameScreen.playerHandler.clear();
         client.stop();
         Gdx.app.postRunnable(() -> setScreen(menu));
