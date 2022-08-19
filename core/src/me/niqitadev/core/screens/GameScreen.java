@@ -47,7 +47,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(final float delta) {
-        ScreenUtils.clear(0.35f, 0, 0, 1);
+        ScreenUtils.clear(0.375f, 0, 0, 1);
         camera.update();
         batch.begin();
         int height = grass.getHeight(), width = grass.getWidth();

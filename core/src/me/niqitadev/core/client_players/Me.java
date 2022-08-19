@@ -1,7 +1,6 @@
 package me.niqitadev.core.client_players;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -22,7 +21,7 @@ public final class Me {
         this.name = name;
         this.camera = camera;
         font = new BitmapFont();
-        font.setColor(Color.GREEN);
+        font.setColor(.1f, .8f, .1f, 1);
         final TextureRegion frame = ResourceHandler.playerIdle.getKeyFrame(0);
         regionHeight = frame.getRegionHeight() / 2f;
         regionWidth = frame.getRegionWidth() / 2f;
@@ -35,7 +34,7 @@ public final class Me {
     public void draw(final Batch batch, final float delta) {
         pastTime += delta;
         pos.interpolate(servPos, .2f, Interpolation.fade);
-        float apply = Interpolation.bounceIn.apply(.35f);
+        float apply = Interpolation.circle.apply(.3f);
         camera.position.add(apply * (pos.x - camera.position.x), apply * (pos.y - camera.position.y), 0);
         TextureRegion frame = ResourceHandler.playerIdle.getKeyFrame(pastTime, true);
         batch.draw(frame, pos.x - regionWidth, pos.y - regionHeight);

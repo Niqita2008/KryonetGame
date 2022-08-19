@@ -20,7 +20,7 @@ public final class OtherClientPlayer {
         servPos = new Vector2();
         pos = new Vector2();
         font = new BitmapFont();
-        font.setColor(.2f, .5f, .7f, 1);
+        font.setColor(.15f, .4f, .65f, 1);
         TextureRegion frame = ResourceHandler.playerIdle.getKeyFrame(0, true);
         final GlyphLayout glyphLayout = new GlyphLayout(font, name);
         regionHeight = frame.getRegionHeight() / 2f;
@@ -31,7 +31,7 @@ public final class OtherClientPlayer {
 
     public void draw(final Batch batch, final float delta) {
         pastTime += delta;
-        pos.interpolate(servPos, .15f, Interpolation.circle);
+        pos.interpolate(servPos, .2f, Interpolation.fade);
         TextureRegion frame = ResourceHandler.playerIdle.getKeyFrame(pastTime, true);
         batch.draw(frame, pos.x - regionWidth, pos.y - regionHeight);
         font.draw(batch, name, pos.x + fontWidth, pos.y + fontHeight);

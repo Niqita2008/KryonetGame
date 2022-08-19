@@ -28,7 +28,7 @@ public class MoveHandler implements Runnable {
     @Override
     public synchronized void run() {
 
-        final long optimalTime = 70000000; // ms / amount of ticks
+        final long optimalTime = 27000000; // ms / amount of ticks
 
         for (long now, updateTime, wait; running; ) {
             now = System.nanoTime();

@@ -17,7 +17,7 @@ public class OnlinePlayer {
         if (x > 999) d = false;
         if (y < -999) s = false;
         if (y > 999) w = false;
-        final float speed = (a || d) && (w || s) ? 17 : 30;
+        final float speed = (a || d) && (w || s) ? 7 : 15;
         x += (d ? speed : 0) - (a ? speed : 0);
         y += (w ? speed : 0) - (s ? speed : 0);
     }
