@@ -20,16 +20,11 @@ import java.io.IOException;
 
 public class MenuScreen extends ScreenAdapter {
 
+    public final Label errorLabel;
+    public final TextButton connectButton;
     private final ExtendViewport viewport;
     private final OrthographicCamera camera;
     private final Stage stage;
-    public final Label errorLabel;
-    public final TextButton connectButton;
-
-    @Override
-    public void dispose() {
-        stage.dispose();
-    }
 
     public MenuScreen(@NotNull Starter starter) {
         camera = starter.orthographicCamera;
@@ -103,8 +98,12 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     @Override
+    public void dispose() {
+        stage.dispose();
+    }
+
+    @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, .15f, 1);
         camera.update();
         stage.act(delta);
         stage.draw();

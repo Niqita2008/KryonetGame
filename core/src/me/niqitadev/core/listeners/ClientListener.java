@@ -5,11 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import me.niqitadev.core.Starter;
+import me.niqitadev.core.client_players.OtherClientPlayer;
 import me.niqitadev.core.packets.JoinResponse;
 import me.niqitadev.core.packets.OtherPlayerDisconnected;
 import me.niqitadev.core.packets.PlayerUpdatePacket;
 import me.niqitadev.core.screens.GameScreen;
-import me.niqitadev.core.client_players.OtherClientPlayer;
 
 public class ClientListener extends Listener {
     private final Starter starter;
@@ -34,19 +34,17 @@ public class ClientListener extends Listener {
             else errorLabel.setText(response.errorMessage);
             return;
         }
-        if (object instanceof PlayerUpdatePacket playerUpdate) {
-            OtherClientPlayer player = gameScreen.playerHandler.getPlayer(playerUpdate.name);
+        if (object instanceof PlayerUpdatePacket packet) {
+            OtherClientPlayer player = gameScreen.playerHandler.getPlayer(packet.name);
             if (player != null) {
-                player.setServPos(playerUpdate.x, playerUpdate.y);
+                player.setServPos(packet.x, packet.y, packet.z);
                 return;
             }
-            if (starter.name.equals(playerUpdate.name)) {
-                gameScreen.playerHandler.me.setServPos(playerUpdate.x, playerUpdate.y);
+            if (starter.name.equals(packet.name)) {
+                gameScreen.playerHandler.me.setServPos(packet.x, packet.y, packet.z);
                 return;
             }
-            player = new OtherClientPlayer(playerUpdate.name);
-            gameScreen.playerHandler.addPlayer(player);
-            player.setServPos(playerUpdate.x, playerUpdate.y);
+            gameScreen.playerHandler.addPlayer(packet.name, packet.x, packet.y, packet.z);
             return;
         }
         if (object instanceof OtherPlayerDisconnected disconnected)

@@ -9,14 +9,15 @@ public class MoveHandler implements Runnable {
     private final Starter starter;
     private boolean running;
 
+    public MoveHandler(Starter starter) {
+        this.starter = starter;
+        listener = new InGameInputListener(starter);
+    }
+
     public void stop() {
         running = false;
         listener.reset();
 
-    }
-    public MoveHandler(Starter starter) {
-        this.starter = starter;
-        listener = new InGameInputListener(starter);
     }
 
     public synchronized void start() {

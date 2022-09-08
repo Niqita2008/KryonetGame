@@ -1,7 +1,5 @@
 package me.niqitadev.core.packets;
 
-import me.niqitadev.core.listeners.InGameInputListener;
-
 public class MovePacket {
     public boolean a, w, s, d;
 

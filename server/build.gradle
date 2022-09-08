@@ -1,4 +1,4 @@
-sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.java.srcDirs = ["src/"]
 
 project.ext.mainClassName = "me.niqitadev.server.Starter"
 import org.apache.tools.ant.taskdefs.condition.Os

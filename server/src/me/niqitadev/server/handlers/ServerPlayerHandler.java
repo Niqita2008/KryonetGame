@@ -10,9 +10,9 @@ import java.util.HashSet;
 
 public class ServerPlayerHandler implements Runnable {
 
-    private boolean running;
-    private final Server server;
     public final HashSet<OnlinePlayer> onlinePlayers = new HashSet<>();
+    private final Server server;
+    private boolean running;
 
     public ServerPlayerHandler(Server server) {
         this.server = server;
@@ -48,8 +48,8 @@ public class ServerPlayerHandler implements Runnable {
         for (long now, updateTime, wait; running; ) {
             now = System.nanoTime();
 
-            final PlayerUpdatePacket playerUpdatePacket = new PlayerUpdatePacket();
-            onlinePlayers.stream().filter(OnlinePlayer::isChanged).forEach(p -> server.sendToAllUDP(playerUpdatePacket.set(p.name, p.x, p.y)));
+            final PlayerUpdatePacket packet = new PlayerUpdatePacket();
+            onlinePlayers.stream().filter(OnlinePlayer::isChanged).forEach(p -> server.sendToAllUDP(packet.set(p.name, p.x, p.y, p.z)));
 
             updateTime = System.nanoTime() - now;
             wait = (optimalTime - updateTime) / 1000000;

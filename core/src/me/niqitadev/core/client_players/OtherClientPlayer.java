@@ -1,39 +1,47 @@
 package me.niqitadev.core.client_players;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
-import me.niqitadev.core.handlers.ResourceHandler;
+import com.badlogic.gdx.math.Vector3;
 
 public final class OtherClientPlayer {
     public final String name;
-    private final Vector2 pos, servPos;
-    private float pastTime;
-    private final BitmapFont font;
+    private final Vector3 pos, servPos;
+    private ModelInstance instance;
 
-    public OtherClientPlayer(final String name) {
+    public OtherClientPlayer(final String name, float x, float y, float z) {
         this.name = name;
-        servPos = new Vector2();
-        pos = new Vector2();
-        font = new BitmapFont();
-        font.setColor(.15f, .4f, .65f, 1);
+        ModelBuilder modelBuilder = new ModelBuilder();
+        Gdx.app.postRunnable(() -> {
+            Model box = modelBuilder.createBox(2, 2, 2,
+                    new Material(ColorAttribute.createDiffuse(Color.LIGHT_GRAY)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+            instance = new ModelInstance(box);
+        });
+        servPos = new Vector3(x, y, z);
+        pos = new Vector3(x, y, z);
     }
 
-    public void draw(final Batch batch, final float delta) {
-        pastTime += delta;
+    public void draw(final ModelBatch batch) {
         pos.interpolate(servPos, .2f, Interpolation.fade);
-        final TextureRegion frame = ResourceHandler.playerIdle.getKeyFrame(pastTime, true);
-        final float regionHeight = frame.getRegionHeight() / 2f, regionWidth = frame.getRegionWidth() / 2f;
-        batch.draw(frame, pos.x - regionWidth, pos.y - regionHeight);
-        final GlyphLayout glyphLayout = new GlyphLayout(font, name);
-        font.draw(batch, name, pos.x + -glyphLayout.width / 2f, pos.y + glyphLayout.height + regionHeight);
+        batch.render(instance);
     }
 
-    public void setServPos(final float x, final float y) {
-        servPos.set(x, y);
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof OtherClientPlayer otherClientPlayer)) return false;
+        return name.equals(otherClientPlayer.name);
+    }
+
+    public void setServPos(final float x, final float y, final float z) {
+        servPos.set(x, y, z);
     }
 
 }

@@ -4,8 +4,8 @@ import me.niqitadev.core.Starter;
 import me.niqitadev.core.packets.MovePacket;
 
 public class InGameInputListener extends AbstractPressListener {
-    public boolean a, w, s, d;
     private final Starter starter;
+    public boolean a, w, s, d;
 
     public InGameInputListener(Starter starter) {
         this.starter = starter;
