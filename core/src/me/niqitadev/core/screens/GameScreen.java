@@ -35,7 +35,7 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(final Starter starter) {
         grass = new Texture("grass.png");
-        camera = starter.camera;
+        camera = starter.orthographicCamera;
         batch = starter.spriteBatch;
         viewport = new ExtendViewport(800, 600, camera);
         viewport.setScaling(Scaling.none);
@@ -49,15 +49,8 @@ public class GameScreen extends ScreenAdapter {
     public void render(final float delta) {
         ScreenUtils.clear(0.375f, 0, 0, 1);
         camera.update();
-        batch.begin();
-        int height = grass.getHeight(), width = grass.getWidth();
-        for (int x = -1000; x < 1000; x += width)
-            for (int y = -1000; y < 1000; y += height) {
-                batch.draw(grass, x, y);
-            }
-        playerHandler.update(delta);
         batch.setProjectionMatrix(camera.combined);
-        batch.end();
+        playerHandler.update(delta, grass);
     }
 
     @Override

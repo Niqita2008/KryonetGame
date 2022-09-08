@@ -1,6 +1,7 @@
 package me.niqitadev.core.listeners;
 
 import me.niqitadev.core.Starter;
+import me.niqitadev.core.packets.MovePacket;
 
 public class InGameInputListener extends AbstractPressListener {
     public boolean a, w, s, d;
@@ -32,10 +33,11 @@ public class InGameInputListener extends AbstractPressListener {
     }
 
     public void reset() {
-        a = false;
-        w = false;
-        s = false;
-        d = false;
+        a = w = s = d = false;
+    }
+
+    public MovePacket get() {
+        return a || w || s || d ? new MovePacket(a, w, s, d) : null;
     }
 
 }

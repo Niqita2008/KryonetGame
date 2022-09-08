@@ -35,20 +35,18 @@ public class ClientListener extends Listener {
             return;
         }
         if (object instanceof PlayerUpdatePacket playerUpdate) {
-            Gdx.app.postRunnable(() -> {
-                OtherClientPlayer player = gameScreen.playerHandler.getPlayer(playerUpdate.name);
-                if (player != null) {
-                    player.setServPos(playerUpdate.x, playerUpdate.y);
-                    return;
-                }
-                if (starter.name.equals(playerUpdate.name)) {
-                    gameScreen.playerHandler.me.setServPos(playerUpdate.x, playerUpdate.y);
-                    return;
-                }
-                player = new OtherClientPlayer(playerUpdate.name);
-                gameScreen.playerHandler.addPlayer(player);
+            OtherClientPlayer player = gameScreen.playerHandler.getPlayer(playerUpdate.name);
+            if (player != null) {
                 player.setServPos(playerUpdate.x, playerUpdate.y);
-            });
+                return;
+            }
+            if (starter.name.equals(playerUpdate.name)) {
+                gameScreen.playerHandler.me.setServPos(playerUpdate.x, playerUpdate.y);
+                return;
+            }
+            player = new OtherClientPlayer(playerUpdate.name);
+            gameScreen.playerHandler.addPlayer(player);
+            player.setServPos(playerUpdate.x, playerUpdate.y);
             return;
         }
         if (object instanceof OtherPlayerDisconnected disconnected)

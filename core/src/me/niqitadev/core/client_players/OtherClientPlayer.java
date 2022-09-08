@@ -11,7 +11,6 @@ import me.niqitadev.core.handlers.ResourceHandler;
 public final class OtherClientPlayer {
     public final String name;
     private final Vector2 pos, servPos;
-    private final float regionWidth, regionHeight, fontWidth, fontHeight;
     private float pastTime;
     private final BitmapFont font;
 
@@ -21,20 +20,16 @@ public final class OtherClientPlayer {
         pos = new Vector2();
         font = new BitmapFont();
         font.setColor(.15f, .4f, .65f, 1);
-        TextureRegion frame = ResourceHandler.playerIdle.getKeyFrame(0, true);
-        final GlyphLayout glyphLayout = new GlyphLayout(font, name);
-        regionHeight = frame.getRegionHeight() / 2f;
-        regionWidth = frame.getRegionWidth() / 2f;
-        fontWidth = -glyphLayout.width / 2f;
-        fontHeight = glyphLayout.height + regionHeight;
     }
 
     public void draw(final Batch batch, final float delta) {
         pastTime += delta;
         pos.interpolate(servPos, .2f, Interpolation.fade);
-        TextureRegion frame = ResourceHandler.playerIdle.getKeyFrame(pastTime, true);
+        final TextureRegion frame = ResourceHandler.playerIdle.getKeyFrame(pastTime, true);
+        final float regionHeight = frame.getRegionHeight() / 2f, regionWidth = frame.getRegionWidth() / 2f;
         batch.draw(frame, pos.x - regionWidth, pos.y - regionHeight);
-        font.draw(batch, name, pos.x + fontWidth, pos.y + fontHeight);
+        final GlyphLayout glyphLayout = new GlyphLayout(font, name);
+        font.draw(batch, name, pos.x + -glyphLayout.width / 2f, pos.y + glyphLayout.height + regionHeight);
     }
 
     public void setServPos(final float x, final float y) {

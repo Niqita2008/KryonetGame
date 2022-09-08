@@ -14,7 +14,6 @@ public class MoveHandler implements Runnable {
         listener.reset();
 
     }
-
     public MoveHandler(Starter starter) {
         this.starter = starter;
         listener = new InGameInputListener(starter);
@@ -27,13 +26,13 @@ public class MoveHandler implements Runnable {
 
     @Override
     public synchronized void run() {
-
         final long optimalTime = 27000000; // ms / amount of ticks
 
         for (long now, updateTime, wait; running; ) {
             now = System.nanoTime();
 
-            starter.client.sendTCP(new MovePacket(listener.a, listener.w, listener.s, listener.d));
+            final MovePacket movePacket = listener.get();
+            if (movePacket != null) starter.client.sendTCP(movePacket);
 
             updateTime = System.nanoTime() - now;
             wait = (optimalTime - updateTime) / 1000000;
