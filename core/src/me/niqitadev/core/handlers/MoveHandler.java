@@ -1,5 +1,6 @@
 package me.niqitadev.core.handlers;
 
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import me.niqitadev.core.Starter;
 import me.niqitadev.core.listeners.InGameInputListener;
 import me.niqitadev.core.packets.MovePacket;
@@ -9,15 +10,14 @@ public class MoveHandler implements Runnable {
     private final Starter starter;
     private boolean running;
 
-    public MoveHandler(Starter starter) {
+    public MoveHandler(Starter starter, PerspectiveCamera camera) {
         this.starter = starter;
-        listener = new InGameInputListener(starter);
+        listener = new InGameInputListener(starter, camera);
     }
 
     public void stop() {
         running = false;
         listener.reset();
-
     }
 
     public synchronized void start() {

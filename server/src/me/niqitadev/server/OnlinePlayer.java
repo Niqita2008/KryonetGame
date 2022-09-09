@@ -6,7 +6,7 @@ import me.niqitadev.core.packets.MovePacket;
 public class OnlinePlayer {
     public final String name;
     public final Connection connection;
-    public float x, z, y;
+    public float x, z, y = 5;
     private boolean changed;
 
     public OnlinePlayer(final String name, final Connection connection) {

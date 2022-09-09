@@ -3,10 +3,7 @@ package me.niqitadev.core.handlers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import me.niqitadev.core.client_players.Me;
@@ -18,15 +15,32 @@ public class ClientPlayerHandler {
     private final HashSet<OtherClientPlayer> players = new HashSet<>();
     private final PerspectiveCamera camera;
     private final ModelBatch batch;
+    private final Environment environment;
     private final ModelInstance instance;
 
     public Me me;
 
-    public ClientPlayerHandler(final PerspectiveCamera camera, final ModelBatch batch) {
+    public ClientPlayerHandler(final PerspectiveCamera camera, final ModelBatch batch, Environment environment) {
         this.camera = camera;
         this.batch = batch;
+        this.environment = environment;
         ModelBuilder modelBuilder = new ModelBuilder();
-        Model rect = modelBuilder.createBox(1, 1, 1,
+        Model rect = modelBuilder.createRect(
+                100,
+                0,
+                -100,
+                -100,
+                0,
+                -100,
+                -100,
+                0,
+                100,
+                100,
+                0,
+                100,
+                0,
+                1,
+                0,
                 new Material(ColorAttribute.createDiffuse(Color.LIGHT_GRAY)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         instance = new ModelInstance(rect);
     }
@@ -41,7 +55,7 @@ public class ClientPlayerHandler {
 
     public void update() {
         batch.begin(camera);
-        batch.render(instance);
+        batch.render(instance, environment);
         players.forEach(p -> p.draw(batch));
         me.draw();
         batch.end();

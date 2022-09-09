@@ -7,7 +7,7 @@ public abstract class AbstractPressListener extends InputAdapter {
 
     @Override
     public final boolean keyDown(int keycode) {
-        keyDown(Input.Keys.toString(keycode));
+        keyDown(Input.Keys.toString(keycode).toLowerCase());
         return false;
     }
 
@@ -15,7 +15,7 @@ public abstract class AbstractPressListener extends InputAdapter {
 
     @Override
     public final boolean keyUp(int keycode) {
-        keyUp(Input.Keys.toString(keycode));
+        keyUp(Input.Keys.toString(keycode).toLowerCase());
         return false;
     }
 

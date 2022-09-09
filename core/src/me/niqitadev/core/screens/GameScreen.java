@@ -3,7 +3,10 @@ package me.niqitadev.core.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import me.niqitadev.core.Starter;
@@ -18,18 +21,22 @@ public class GameScreen extends ScreenAdapter {
     private final Starter starter;
 
     public GameScreen(final Starter starter) {
+        Environment environment = new Environment();
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, .4f, .4f, .4f, 1));
+        environment.add(new DirectionalLight().set(.8f, .8f, .8f, -1, -.8f, -.2f));
         camera = starter.cam;
         ModelBatch batch = starter.modelBatch;
         viewport = new ExtendViewport(800, 600, camera);
         viewport.setScaling(Scaling.none);
-        playerHandler = new ClientPlayerHandler(camera, batch);
+        playerHandler = new ClientPlayerHandler(camera, batch, environment);
         this.starter = starter;
-        moveHandler = new MoveHandler(starter);
+        moveHandler = new MoveHandler(starter, camera);
     }
 
     @Override
     public void hide() {
         moveHandler.stop();
+        Gdx.input.setCursorCatched(false);
     }
 
     @Override
@@ -37,6 +44,7 @@ public class GameScreen extends ScreenAdapter {
         playerHandler.addMe(starter.name);
         moveHandler.start();
         Gdx.input.setInputProcessor(moveHandler.listener);
+        Gdx.input.setCursorCatched(true);
     }
 
     @Override
