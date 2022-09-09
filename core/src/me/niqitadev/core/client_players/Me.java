@@ -16,6 +16,7 @@ public final class Me {
 
     public void draw() {
         pos.interpolate(servPos, .2f, Interpolation.circle);
+        System.out.println(servPos);
         camera.position.set(pos);
     }
 

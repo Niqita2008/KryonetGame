@@ -1,18 +1,17 @@
 package me.niqitadev.core.packets;
 
 public class MovePacket {
-    public boolean a, w, s, d, up, down;
+
+    public final float x, y, z;
 
     public MovePacket() {
+        x = y = 0;
+        z = 5;
     }
 
-    public MovePacket(boolean a, boolean w, boolean s, boolean d, boolean up, boolean down) {
-        this.down = down;
-        this.up = up;
-        this.a = a;
-        this.w = w;
-        this.s = s;
-        this.d = d;
+    public MovePacket(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
-
 }

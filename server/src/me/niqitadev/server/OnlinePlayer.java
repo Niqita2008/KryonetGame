@@ -14,16 +14,16 @@ public class OnlinePlayer {
         this.connection = connection;
     }
 
-    public boolean isChanged() {
+    public boolean isUpdated() {
         boolean b = changed;
         changed = false;
         return b;
     }
 
-    public void update(MovePacket mp) {
-        final float speed = (mp.a || mp.d) && (mp.w || mp.s) ? .5f : 1;
-        x += (mp.d ? speed : 0) - (mp.a ? speed : 0);
-        z += (mp.s ? speed : 0) - (mp.w ? speed : 0);
+    public void apply(MovePacket mp) {
+        x += mp.x;
+        y += mp.y;
+        z += mp.z;
         changed = true;
         if (y > 990) y = 990;
         else if (y < -990) y = -990;

@@ -49,7 +49,7 @@ public class ServerPlayerHandler implements Runnable {
             now = System.nanoTime();
 
             final PlayerUpdatePacket packet = new PlayerUpdatePacket();
-            onlinePlayers.stream().filter(OnlinePlayer::isChanged).forEach(p -> server.sendToAllUDP(packet.set(p.name, p.x, p.y, p.z)));
+            onlinePlayers.stream().filter(OnlinePlayer::isUpdated).forEach(p -> server.sendToAllUDP(packet.set(p.name, p.x, p.y, p.z)));
 
             updateTime = System.nanoTime() - now;
             wait = (optimalTime - updateTime) / 1000000;
