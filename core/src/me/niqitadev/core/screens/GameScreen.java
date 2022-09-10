@@ -41,7 +41,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        playerHandler.addMe(starter.name);
         moveHandler.start();
         Gdx.input.setInputProcessor(moveHandler.listener);
         Gdx.input.setCursorCatched(true);

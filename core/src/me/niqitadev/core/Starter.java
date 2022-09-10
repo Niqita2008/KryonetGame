@@ -7,32 +7,35 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.esotericsoftware.kryonet.Client;
 import me.niqitadev.core.screens.GameScreen;
 import me.niqitadev.core.screens.MenuScreen;
 
 public class Starter extends Game {
 
+    public static ModelBuilder modelBuilder;
     public SpriteBatch spriteBatch;
     public OrthographicCamera orthographicCamera;
     public Client client = new Client();
     private MenuScreen menu;
     public GameScreen gameScreen;
 
-    public String name;
+    public static String name;
     public PerspectiveCamera cam;
     public ModelBatch modelBatch;
 
     @Override
     public void create() {
         orthographicCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam = new PerspectiveCamera(90, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam = new PerspectiveCamera(100, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(0, 4, 0);
         cam.near = 1;
-        cam.far = 300;
+        cam.far = 400;
         cam.update();
         modelBatch = new ModelBatch();
         spriteBatch = new SpriteBatch();
+        modelBuilder = new ModelBuilder();
         menu = new MenuScreen(this);
         gameScreen = new GameScreen(this);
         setScreen(menu);

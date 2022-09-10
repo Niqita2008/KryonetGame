@@ -2,8 +2,7 @@ package me.niqitadev.server.handlers;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
-import me.niqitadev.core.packets.OtherPlayerDisconnected;
-import me.niqitadev.core.packets.PlayerUpdatePacket;
+import me.niqitadev.core.packets.*;
 import me.niqitadev.server.OnlinePlayer;
 
 import java.util.HashSet;
@@ -13,14 +12,37 @@ public class ServerPlayerHandler implements Runnable {
     public final HashSet<OnlinePlayer> onlinePlayers = new HashSet<>();
     private final Server server;
     private boolean running;
+    private final float spawnX, spawnY, spawnZ;
 
     public ServerPlayerHandler(Server server) {
         this.server = server;
+        spawnX = 0;
+        spawnY = 5;
+        spawnZ = 0;
     }
 
     public synchronized void start() {
         running = true;
         new Thread(this).start();
+    }
+
+    public void addPlayer(final Connection connection, final JoinRequest req) {
+        JoinResponse resp = new JoinResponse();
+        if (getPlayer(req.name) != null) {
+            resp.errorMessage = JoinRequestEnum.USER_WITH_THIS_NICK_ALREADY_CONNECTED_TO_THE_SERVER.message;
+            System.err.println(req.name + " tried to connect, but was kicked with error \"" + resp.errorMessage + "\".");
+            connection.sendTCP(resp);
+            return;
+        }
+        onlinePlayers.add(new OnlinePlayer(req.name, connection));
+        connection.sendTCP(resp);
+
+        final PlayerUpdatePacket packet = new PlayerUpdatePacket(req.name, spawnX, spawnY, spawnZ), packet1 = new PlayerUpdatePacket();
+        onlinePlayers.forEach(n -> {
+            n.connection.sendTCP(packet);
+            server.sendToAllExceptTCP(n.connection.getID(), packet1.set(n.name, n.x, n.y, n.z));
+        });
+        System.out.println(req.name + " joined.");
     }
 
     public OnlinePlayer getPlayer(final String name) {

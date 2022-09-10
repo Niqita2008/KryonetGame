@@ -21,7 +21,7 @@ public class Starter {
         kryo.register(JoinRequestEnum.class);
         kryo.register(OtherPlayerDisconnected.class);
         kryo.register(JoinResponse.class);
-        ServerPlayerHandler handler = new ServerPlayerHandler(server);
+        final ServerPlayerHandler handler = new ServerPlayerHandler(server);
         handler.start();
         server.addListener(new ServerListener(handler));
     }

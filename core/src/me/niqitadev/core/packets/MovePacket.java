@@ -2,14 +2,11 @@ package me.niqitadev.core.packets;
 
 public class MovePacket {
 
-    public final float x, y, z;
+    public double x, y, z;
 
-    public MovePacket() {
-        x = y = 0;
-        z = 5;
-    }
+    public MovePacket() {}
 
-    public MovePacket(float x, float y, float z) {
+    public MovePacket(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
         this.z = z;

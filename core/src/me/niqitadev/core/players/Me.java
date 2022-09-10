@@ -1,4 +1,4 @@
-package me.niqitadev.core.client_players;
+package me.niqitadev.core.players;
 
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Interpolation;
@@ -15,8 +15,7 @@ public final class Me {
     }
 
     public void draw() {
-        pos.interpolate(servPos, .2f, Interpolation.circle);
-        System.out.println(servPos);
+        pos.interpolate(servPos, .05f, Interpolation.linear);
         camera.position.set(pos);
     }
 

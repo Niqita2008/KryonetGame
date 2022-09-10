@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import me.niqitadev.core.Starter;
-import me.niqitadev.core.client_players.OtherClientPlayer;
+import me.niqitadev.core.players.OtherClientPlayer;
 import me.niqitadev.core.packets.JoinResponse;
 import me.niqitadev.core.packets.OtherPlayerDisconnected;
 import me.niqitadev.core.packets.PlayerUpdatePacket;
@@ -35,12 +35,12 @@ public class ClientListener extends Listener {
             return;
         }
         if (object instanceof PlayerUpdatePacket packet) {
-            OtherClientPlayer player = gameScreen.playerHandler.getPlayer(packet.name);
+            final OtherClientPlayer player = gameScreen.playerHandler.getPlayer(packet.name);
             if (player != null) {
                 player.setServPos(packet.x, packet.y, packet.z);
                 return;
             }
-            if (starter.name.equals(packet.name)) {
+            if (Starter.name.equals(packet.name)) {
                 gameScreen.playerHandler.me.setServPos(packet.x, packet.y, packet.z);
                 return;
             }

@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import me.niqitadev.core.client_players.Me;
-import me.niqitadev.core.client_players.OtherClientPlayer;
+import me.niqitadev.core.Starter;
+import me.niqitadev.core.players.Me;
+import me.niqitadev.core.players.OtherClientPlayer;
 
 import java.util.HashSet;
 
@@ -24,8 +24,7 @@ public class ClientPlayerHandler {
         this.camera = camera;
         this.batch = batch;
         this.environment = environment;
-        ModelBuilder modelBuilder = new ModelBuilder();
-        Model rect = modelBuilder.createRect(
+        Model rect = Starter.modelBuilder.createRect(
                 100,
                 0,
                 -100,
@@ -43,14 +42,11 @@ public class ClientPlayerHandler {
                 0,
                 new Material(ColorAttribute.createDiffuse(Color.LIGHT_GRAY)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         instance = new ModelInstance(rect);
+        me = new Me(Starter.name, camera);
     }
 
     public OtherClientPlayer getPlayer(final String name) {
         return players.stream().filter(k -> k.name.equals(name)).findFirst().orElse(null);
-    }
-
-    public void addMe(final String name) {
-        me = new Me(name, camera);
     }
 
     public void update() {
@@ -72,6 +68,6 @@ public class ClientPlayerHandler {
     }
 
     public void addPlayer(final String name, final float x, final float y, final float z) {
-        new OtherClientPlayer(name, x, y, z);
+        players.add(new OtherClientPlayer(name, x, y, z));
     }
 }

@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.esotericsoftware.kryo.Kryo;
 import me.niqitadev.core.Starter;
@@ -70,8 +69,8 @@ public class MenuScreen extends ScreenAdapter {
                 }
 
                 JoinRequest request = new JoinRequest();
-                request.username = usernameTextField.getText();
-                starter.name = request.username;
+                request.name = usernameTextField.getText();
+                Starter.name = request.name;
                 starter.client.sendTCP(request);
                 return false;
             }
