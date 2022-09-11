@@ -8,15 +8,16 @@ import me.niqitadev.core.packets.MovePacket;
 
 public class InGameInputListener extends AbstractPressListener {
     private final Starter starter;
-    private final PerspectiveCamera camera;
+    private final PerspectiveCamera cam;
 
     private final Vector3 tmp = new Vector3(), tmp1 = new Vector3();
     public boolean a, w, s, d, up, down;
     public float degreesPerPixel = .5f;
+    private boolean moved;
 
-    public InGameInputListener(Starter starter, PerspectiveCamera camera) {
+    public InGameInputListener(Starter starter, PerspectiveCamera cam) {
         this.starter = starter;
-        this.camera = camera;
+        this.cam = cam;
     }
 
     @Override
@@ -46,12 +47,8 @@ public class InGameInputListener extends AbstractPressListener {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        float deltaX = -Gdx.input.getDeltaX() * degreesPerPixel;
-        float deltaY = -Gdx.input.getDeltaY() * degreesPerPixel;
-        camera.direction.rotate(camera.up, deltaX);
-        tmp.set(camera.direction).crs(camera.up).nor();
-        camera.direction.rotate(tmp, deltaY);
-        return true;
+        cam.direction.rotate(cam.up, -Gdx.input.getDeltaX() * degreesPerPixel).rotate(tmp.set(cam.direction).crs(cam.up).nor(), -Gdx.input.getDeltaY() * degreesPerPixel);
+        return moved = true;
     }
 
 
@@ -60,15 +57,15 @@ public class InGameInputListener extends AbstractPressListener {
     }
 
     public MovePacket get() {
-        if (w) tmp.add(tmp1.set(camera.direction.x, 0, camera.direction.z).nor());
-        if (s) tmp.add(tmp1.set(-camera.direction.x, 0, -camera.direction.z).nor());
-        if (d) tmp.add(tmp1.set(camera.direction.x, 0, camera.direction.z).crs(camera.up).nor());
-        if (a) tmp.add(tmp1.set(-camera.direction.x, 0, -camera.direction.z).crs(camera.up).nor());
-        if (up) tmp.y += .1f;
-        if (down) tmp.y -= .1f;
-        final float x = tmp.x, y = tmp.y, z = tmp.z;
-        tmp.set(0, 0, 0);
-        return a || w || s || d || up || down ? new MovePacket(x, y, z) : null;
+        if (w) tmp1.add(tmp.set(cam.direction.x, 0, cam.direction.z).nor());
+        if (s) tmp1.add(tmp.set(-cam.direction.x, 0, -cam.direction.z).nor());
+        if (d) tmp1.add(tmp.set(cam.direction.x, 0, cam.direction.z).crs(cam.up).nor());
+        if (a) tmp1.add(tmp.set(-cam.direction.x, 0, -cam.direction.z).crs(cam.up).nor());
+        if (up) tmp1.y += .1f;
+        if (down) tmp1.y -= .1f;
+        final float x = tmp1.x, y = tmp1.y, z = tmp1.z;
+        tmp1.set(0, 0, 0);
+        return a || w || s || d || up || down || moved ? new MovePacket(x, y, z, cam.direction.x, cam.direction.y, cam.direction.z) : null;
     }
 
 }

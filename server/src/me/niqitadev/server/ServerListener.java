@@ -22,7 +22,7 @@ public class ServerListener extends com.esotericsoftware.kryonet.Listener {
     public void received(final Connection connection, final Object object) {
         if (object instanceof JoinRequest req) handler.addPlayer(connection, req);
         else if (object instanceof MovePacket movePacket) {
-            OnlinePlayer player = handler.getPlayer(connection);
+            final OnlinePlayer player = handler.getPlayer(connection);
             if (player != null) player.apply(movePacket);
             else connection.close();
         }

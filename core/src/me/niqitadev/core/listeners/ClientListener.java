@@ -37,7 +37,7 @@ public class ClientListener extends Listener {
         if (object instanceof PlayerUpdatePacket packet) {
             final OtherClientPlayer player = gameScreen.playerHandler.getPlayer(packet.name);
             if (player != null) {
-                player.setServPos(packet.x, packet.y, packet.z);
+                player.setServPos(packet.x, packet.y, packet.z, packet.dirX, packet.dirY, packet.dirZ);
                 return;
             }
             if (Starter.name.equals(packet.name)) {
