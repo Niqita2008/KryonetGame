@@ -12,10 +12,13 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector3;
 import me.niqitadev.core.Starter;
 
+import static com.badlogic.gdx.math.Matrix4.*;
+
 public final class OtherClientPlayer {
     public final String name;
-    private final Vector3 pos, servPos, servDir, dir;
+    private final Vector3 pos, servPos;
     private ModelInstance instance;
+    private float[] values;
 
     public OtherClientPlayer(final String name, float x, float y, float z) {
         this.name = name;
@@ -26,14 +29,15 @@ public final class OtherClientPlayer {
         });
         servPos = new Vector3(x, y, z);
         pos = new Vector3(x, y, z);
-        servDir = new Vector3();
-        dir = new Vector3();
     }
 
     public void draw(final ModelBatch batch) {
-        if (instance == null) return;
-        instance.transform.setToRotation(dir.interpolate(servDir, .03f, Interpolation.linear), Vector3.X);
-        instance.transform.setTranslation(pos.interpolate(servPos, .03f, Interpolation.linear));
+        if (instance == null || values == null) return;
+        pos.interpolate(servPos, .03f, Interpolation.linear);
+        values[M03] = pos.x;
+        values[M13] = pos.y;
+        values[M23] = pos.z;
+        instance.transform.set(values);
         batch.render(instance);
     }
 
@@ -43,9 +47,9 @@ public final class OtherClientPlayer {
         return name.equals(otherClientPlayer.name);
     }
 
-    public void setServPos(final float x, final float y, final float z, final float dirX, final float dirY, final float dirZ) {
+    public void setServPos(final float x, final float y, final float z, final float[] values) {
         servPos.set(x, y, z);
-        servDir.set(dirX, 0, dirZ);
+        this.values = values;
     }
 
 }

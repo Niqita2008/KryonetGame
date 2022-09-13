@@ -2,9 +2,10 @@ package me.niqitadev.core.packets;
 
 public class PlayerUpdatePacket {
     public String name;
-    public float y, x, z, dirX, dirY, dirZ;
+    public float y, x, z;
+    public float[] values;
 
-    public PlayerUpdatePacket(final String name, final float x, final float y, final float z, final double rot) {
+    public PlayerUpdatePacket(final String name, final float x, final float y, final float z) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -13,11 +14,9 @@ public class PlayerUpdatePacket {
 
     public PlayerUpdatePacket() {}
 
-    public PlayerUpdatePacket set(final String name, final float x, final float y, final float z, final float dirX, final float dirY, final float dirZ) {
+    public PlayerUpdatePacket set(final String name, final float x, final float y, final float z, final float[] values) {
+        this.values = values;
         this.name = name;
-        this.dirX = dirX;
-        this.dirY = dirY;
-        this.dirZ = dirZ;
         this.x = x;
         this.y = y;
         this.z = z;

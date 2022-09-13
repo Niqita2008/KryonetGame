@@ -53,6 +53,7 @@ public class MenuScreen extends ScreenAdapter {
                 starter.client.start();
                 Kryo kryo = starter.client.getKryo();
                 kryo.register(JoinRequest.class);
+                kryo.register(float[].class);
                 kryo.register(PlayerUpdatePacket.class);
                 kryo.register(MovePacket.class);
                 kryo.register(JoinRequestEnum.class);

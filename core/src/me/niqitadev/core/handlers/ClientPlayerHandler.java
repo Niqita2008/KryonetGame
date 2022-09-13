@@ -1,10 +1,10 @@
 package me.niqitadev.core.handlers;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import me.niqitadev.core.Starter;
 import me.niqitadev.core.players.Me;
 import me.niqitadev.core.players.OtherClientPlayer;
@@ -40,7 +40,7 @@ public class ClientPlayerHandler {
                 0,
                 1,
                 0,
-                new Material(ColorAttribute.createDiffuse(Color.LIGHT_GRAY)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+                new Material(TextureAttribute.createDiffuse(new Texture("grass.png"))), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         instance = new ModelInstance(rect);
         me = new Me(Starter.name, camera);
     }

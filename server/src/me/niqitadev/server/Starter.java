@@ -16,6 +16,7 @@ public class Starter {
         server.bind(7392, 7392);
         Kryo kryo = server.getKryo();
         kryo.register(JoinRequest.class);
+        kryo.register(float[].class);
         kryo.register(PlayerUpdatePacket.class);
         kryo.register(MovePacket.class);
         kryo.register(JoinRequestEnum.class);

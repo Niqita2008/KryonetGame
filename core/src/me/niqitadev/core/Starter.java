@@ -28,10 +28,10 @@ public class Starter extends Game {
     @Override
     public void create() {
         orthographicCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam = new PerspectiveCamera(100, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(0, 4, 0);
-        cam.near = 1;
-        cam.far = 400;
+        cam = new PerspectiveCamera(95, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam.position.set(0, 5, 0);
+        cam.near = .5f;
+        cam.far = 100;
         cam.update();
         modelBatch = new ModelBatch();
         spriteBatch = new SpriteBatch();

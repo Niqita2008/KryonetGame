@@ -37,10 +37,10 @@ public class ServerPlayerHandler implements Runnable {
         onlinePlayers.add(new OnlinePlayer(req.name, connection));
         connection.sendTCP(resp);
 
-        final PlayerUpdatePacket packet = new PlayerUpdatePacket(req.name, spawnX, spawnY, spawnZ, 0), packet1 = new PlayerUpdatePacket();
+        final PlayerUpdatePacket packet = new PlayerUpdatePacket(req.name, spawnX, spawnY, spawnZ), packet1 = new PlayerUpdatePacket();
         onlinePlayers.forEach(n -> {
             n.connection.sendTCP(packet);
-            server.sendToAllExceptTCP(n.connection.getID(), packet1.set(n.name, n.x, n.y, n.z, n.dirX, n.dirY, n.dirZ));
+            server.sendToAllExceptTCP(n.connection.getID(), packet1.set(n.name, n.x, n.y, n.z, n.values));
         });
         System.out.println(req.name + " joined.");
     }
@@ -72,7 +72,7 @@ public class ServerPlayerHandler implements Runnable {
 
             final PlayerUpdatePacket packet = new PlayerUpdatePacket();
             onlinePlayers.stream().filter(OnlinePlayer::isUpdated).forEach(p -> server.sendToAllUDP(
-                    packet.set(p.name, p.x, p.y, p.z, p.dirX, p.dirY, p.dirZ)));
+                    packet.set(p.name, p.x, p.y, p.z, p.values)));
 
             updateTime = System.nanoTime() - now;
             wait = (optimalTime - updateTime) / 1000000;

@@ -65,7 +65,7 @@ public class InGameInputListener extends AbstractPressListener {
         if (down) tmp1.y -= .1f;
         final float x = tmp1.x, y = tmp1.y, z = tmp1.z;
         tmp1.set(0, 0, 0);
-        return a || w || s || d || up || down || moved ? new MovePacket(x, y, z, cam.direction.x, cam.direction.y, cam.direction.z) : null;
+        return a || w || s || d || up || down || moved ? new MovePacket(x, y, z, cam.view.val) : null;
     }
 
 }

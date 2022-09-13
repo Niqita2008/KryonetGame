@@ -6,7 +6,8 @@ import me.niqitadev.core.packets.MovePacket;
 public class OnlinePlayer {
     public final String name;
     public final Connection connection;
-    public float x, z, y = 5, dirX, dirY, dirZ;
+    public float x, z, y = 5;
+    public float[] values;
     private boolean changed;
 
     public OnlinePlayer(final String name, final Connection connection) {
@@ -24,9 +25,7 @@ public class OnlinePlayer {
         x += mp.x;
         y += mp.y;
         z += mp.z;
-        dirX = mp.dirX;
-        dirY = mp.dirY;
-        dirZ = mp.dirZ;
+        values = mp.values;
         changed = true;
         if (y > 990) y = 990;
         else if (y < -990) y = -990;
